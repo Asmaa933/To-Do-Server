@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <Label fx:id="statusLabel" layoutX="143.0" layoutY="79.0" prefHeight="31.0" prefWidth="217.0" text="on" />
+      <Label fx:id="statusLabel" layoutX="143.0" layoutY="79.0" prefHeight="31.0" prefWidth="217.0" text="Off" />
       <VBox layoutX="30.0" layoutY="250.0" prefHeight="114.0" prefWidth="158.0">
          <children>
             <Label prefHeight="40.0" prefWidth="158.0" text="Number of users :" textAlignment="CENTER" />
@@ -19,7 +19,7 @@
          </children>
       </VBox>
       <Label layoutX="30.0" layoutY="79.0" prefHeight="31.0" prefWidth="100.0" text="Server status:" textAlignment="CENTER" />
-      <VBox layoutX="188.0" layoutY="250.0" prefHeight="114.0" prefWidth="100.0">
+      <VBox layoutX="236.0" layoutY="250.0" prefHeight="114.0" prefWidth="100.0">
          <children>
             <Label fx:id="numOfUsersLabelnumOfUsersLabel" prefHeight="40.0" prefWidth="100.0" text="0" textAlignment="CENTER" />
             <Label fx:id="numOfOnlineLabel" prefHeight="40.0" prefWidth="100.0" text="0" textAlignment="CENTER" />

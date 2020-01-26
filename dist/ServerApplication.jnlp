@@ -8,8 +8,9 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ServerApplication.jar" size="7736" download="eager" />
+    <jar href="ServerApplication.jar" size="12352" download="eager" />
     <jar href="lib/json-simple-1.1.1.jar" size="23737" download="eager" />
+    <jar href="lib/mysql-connector-java-8.0.18.jar" size="2330539" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ServerApplication" >
     <param name="requiredFXVersion" value="8.0+"/>

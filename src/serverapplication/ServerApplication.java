@@ -5,6 +5,9 @@
  */
 package serverapplication;
 
+
+import Models.UserModel;
+import database.DatabaseHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +29,13 @@ public class ServerApplication extends Application {
 
         stage.setScene(scene);
         stage.show();
+        
+       // UserModel user = new UserModel(0, "asmaa", "asmaat@gmail.com","123456","gaaf");
+        
+//        DatabaseHandler.startConnection();
+//        System.out.println(DatabaseHandler.addUser(user));
+//
+//        DatabaseHandler.closeConnection();
     }
 
     /**

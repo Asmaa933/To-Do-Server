@@ -14,16 +14,19 @@ public class UserModel {
     private String name;
     private String email;
     private String password;
-    private int online_status;
+    private String online_status;
     
-    public static final int OFFLINE = 0;
-    public static final int ONLINE = 1;
-
-
+    public static final class Status{
+        public static final String OFFLINE = "offline";
+        public static final String ONLINE = "online";
+    }
+    
+    
+    
     public UserModel() {
     }
     
-    public UserModel(int id, String name, String email, String password, int online_status) {
+    public UserModel(int id, String name, String email, String password, String online_status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -31,18 +34,20 @@ public class UserModel {
         this.online_status = online_status;
     }
 
-    public UserModel(int id, String name, String email, int online_status) {
+    public UserModel(int id, String name, String email, String online_status) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.online_status = online_status;
     }
-    
-    public UserModel(String name, String email, int online_status) {
+
+    public UserModel(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.online_status = online_status;
+        this.password = password;
     }
+    
+    
 
     public int getId() {
         return id;
@@ -76,11 +81,11 @@ public class UserModel {
         this.password = password;
     }
 
-    public int getOnline_status() {
+    public String getOnline_status() {
         return online_status;
     }
 
-    public void setOnline_status(int online_status) {
+    public void setOnline_status(String online_status) {
         this.online_status = online_status;
     }
     
