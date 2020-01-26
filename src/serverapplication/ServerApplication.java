@@ -29,6 +29,8 @@ public class ServerApplication extends Application {
 
         stage.setScene(scene);
         stage.show();
+        ServerConnector cv= new ServerConnector();
+        cv.startServer();
         
        // UserModel user = new UserModel(0, "asmaa", "asmaat@gmail.com","123456","gaaf");
         
