@@ -6,8 +6,6 @@
 package serverapplication;
 
 
-import Models.UserModel;
-import database.DatabaseHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +17,7 @@ import javafx.stage.Stage;
  * @author esma
  */
 public class ServerApplication extends Application {
+    public static ServerConnector serverConnector;
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -29,15 +28,9 @@ public class ServerApplication extends Application {
 
         stage.setScene(scene);
         stage.show();
-        ServerConnector cv= new ServerConnector();
-        cv.startServer();
         
-       // UserModel user = new UserModel(0, "asmaa", "asmaat@gmail.com","123456","gaaf");
-        
-//        DatabaseHandler.startConnection();
-//        System.out.println(DatabaseHandler.addUser(user));
-//
-//        DatabaseHandler.closeConnection();
+        serverConnector = new ServerConnector();
+        serverConnector.startServer();
     }
 
     /**

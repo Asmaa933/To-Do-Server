@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package serverapplication;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,5 +37,10 @@ public class ServerController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    @FXML 
+    private void btnStartPressed(ActionEvent event) {
+        
+    }
     
 }

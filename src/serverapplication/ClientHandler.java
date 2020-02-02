@@ -5,11 +5,16 @@
  */
 package serverapplication;
 
+import help.JsonConst;
+import help.JsonUtil;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.json.JsonObject;
 
 /**
  *
@@ -23,7 +28,7 @@ public class ClientHandler extends Thread {
 
     public static Vector<ClientHandler> clientThreads = new Vector<ClientHandler>();
 
-    public ClientHandler(Socket s) {
+    public ClientHandler(Socket s, int Clintcount) {
         try {
             this.clientSocket = s;
             dis = new DataInputStream(clientSocket.getInputStream());
@@ -31,34 +36,54 @@ public class ClientHandler extends Thread {
             clientThreads.add(this);
             start();
         } catch (IOException ex) {
-            //clientThreads.remove(this);
-            ex.printStackTrace();
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void printMsg(String msg) {
-        System.out.println(msg);
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                String msg = dis.readLine();
-                System.out.println(msg);
-                //sendToAll(msg);
-            } catch (IOException ex) {
+                String str = dis.readLine();
+                switch (str) {
+                    case "JavaTODO_ClientFINISH":
+                        clientThreads.remove(this);
+                        this.stop();
+                        break;
+                    default:
 
-                ex.printStackTrace();
+                        database.DatabaseHandler.startConnection();  // wrong
+
+                        JsonObject jsonObject = JsonUtil.convertFromString(str);
+                        String requestType = jsonObject.getString(JsonConst.TYPE);
+                        switch (requestType) {
+                            case JsonConst.TYPE_EMAIL_SIGNIN_REQUEST:
+                                String email = JsonUtil.convertFromJsonEmail(jsonObject);
+                                int userId = database.DatabaseHandler.checkEmail(email);
+                                sendToOneClient(JsonUtil.convertToJsonEmailResponse(userId) + "");
+                                break;
+                            case JsonConst.TYPE_PASSWORD_SIGNIN_REQUEST:
+                                int id = JsonUtil.convertFromJsonId(jsonObject);
+                                String password = JsonUtil.convertFromJsonPasswordd(jsonObject);
+                                boolean passFlag = database.DatabaseHandler.checkPassword(id, password);
+                                //sendToOneClient(passFlag + "");
+                                sendToOneClient(JsonUtil.convertToJsonPasswordResponse(passFlag) + "");
+                                break;
+                        }
+                        break;
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
     /**
      * sends message to all clients connected to the server
+     *
      * @param msg to be sent
      */
-    public void sendToAll(String msg) {
+    public static void sendToAll(String msg) {
         for (ClientHandler ch : clientThreads) {
             ch.ps.println(msg);
         }
@@ -66,6 +91,7 @@ public class ClientHandler extends Thread {
 
     /**
      * sends message to one client
+     *
      * @param msg to be sent to one client
      */
     public void sendToOneClient(String msg) {
@@ -81,7 +107,7 @@ public class ClientHandler extends Thread {
             ps.close();
             clientSocket.close();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

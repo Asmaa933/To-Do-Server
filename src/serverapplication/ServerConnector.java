@@ -8,13 +8,17 @@ package serverapplication;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author remon
  */
-public class ServerConnector {
+public class ServerConnector extends Thread{
 
+    static int clientCounter =0;
+    
     public static final int PORT_NO = 5005;
     private ServerSocket serverSocket;
 
@@ -22,15 +26,22 @@ public class ServerConnector {
      * Starts the server
      */
     public void startServer() {
-        Socket clientSocket;
+       this.start();
+    }
+
+    @Override
+    public void run() {
+       Socket clientSocket;
         try {
             serverSocket = new ServerSocket(PORT_NO);
             while (true) {
                 clientSocket = serverSocket.accept();
-                new ClientHandler(clientSocket);
+                new ClientHandler(clientSocket,++clientCounter);
             }
+            
         } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            Logger.getLogger(ServerConnector.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
+    
 }

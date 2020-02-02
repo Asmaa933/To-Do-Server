@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models;
+package models;
 
 /**
  *
@@ -16,7 +16,7 @@ public class UserModel {
     private String password;
     private String online_status;
     
-    public static final class Status{
+    public static final class ONLINE_STATUS{
         public static final String OFFLINE = "offline";
         public static final String ONLINE = "online";
     }
