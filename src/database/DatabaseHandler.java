@@ -5,8 +5,8 @@
  */
 package database;
 
-import models.ListModel;
-import models.UserModel;
+import model.ListModel;
+import model.UserModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

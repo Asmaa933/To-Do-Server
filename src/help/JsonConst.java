@@ -19,6 +19,6 @@ public class JsonConst {
     public static final String TYPE_EMAIL_SIGNIN_RESPONSE = "email_signin_response";
     public static final String ID = "id";
     public static final String TYPE_PASSWORD_SIGNIN_RESPONSE = "password_signin_response";
-   
+    public static final String TYPE_SIGNUP_REQUEST = "signup_request";
 
 }

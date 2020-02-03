@@ -5,6 +5,7 @@
  */
 package help;
 
+import model.UserModel;
 import javax.json.Json;
 import javax.json.JsonObject;
 import java.io.StringReader;
@@ -15,6 +16,10 @@ import javax.json.JsonReader;
  * @author remon
  */
 public class JsonUtil {
+
+    public static void main(String[] args) {
+
+    }
 
     public static String convertFromJsonEmail(JsonObject obj) {
         return obj.getString(JsonConst.EMAIL);
@@ -34,7 +39,7 @@ public class JsonUtil {
 
     public static JsonObject convertToJsonPasswordResponse(boolean b) {
         JsonObject obj = Json.createObjectBuilder()
-                .add(JsonConst.TYPE, JsonConst.TYPE_EMAIL_SIGNIN_RESPONSE)
+                .add(JsonConst.TYPE, JsonConst.TYPE_EMAIL_SIGNIN_RESPONSE) //NotUse
                 .add(JsonConst.TYPE_PASSWORD_SIGNIN_RESPONSE, b)
                 .build();
         return obj;
@@ -52,4 +57,14 @@ public class JsonUtil {
         return obj.getInt(JsonConst.ID);
     }
 
+    //Don't Have Online_Status
+    public static UserModel converetFromJsonUserModel(JsonObject obj) {
+        UserModel user = new UserModel();
+        user.setId(obj.getInt("id"));
+        user.setName(obj.getString("name"));
+        user.setEmail(obj.getString("email"));
+        user.setPassword(obj.getString("password"));
+        return user;
+    }
+    
 }

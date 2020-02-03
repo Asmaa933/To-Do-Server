@@ -5,6 +5,8 @@
  */
 package serverapplication;
 
+import model.UserModel;
+import database.DatabaseHandler;
 import help.JsonConst;
 import help.JsonUtil;
 import java.io.DataInputStream;
@@ -34,10 +36,16 @@ public class ClientHandler extends Thread {
             dis = new DataInputStream(clientSocket.getInputStream());
             ps = new PrintStream(clientSocket.getOutputStream());
             clientThreads.add(this);
+            System.out.println("ipSOCKET= " + s.getRemoteSocketAddress().toString());
             start();
         } catch (IOException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            //clientThreads.remove(this);
+            ex.printStackTrace();
         }
+    }
+
+    public void printMsg(String msg) {
+        System.out.println(msg);
     }
 
     @Override
@@ -47,30 +55,40 @@ public class ClientHandler extends Thread {
                 String str = dis.readLine();
                 switch (str) {
                     case "JavaTODO_ClientFINISH":
+                        System.out.println("JavaTODO_ClientFINISH");
                         clientThreads.remove(this);
                         this.stop();
+                        //make Client Of line
                         break;
-                    default:
 
-                        database.DatabaseHandler.startConnection();  // wrong
+                    default:
+                        System.out.println(str);
+
+                        DatabaseHandler.startConnection();  // wrong
 
                         JsonObject jsonObject = JsonUtil.convertFromString(str);
                         String requestType = jsonObject.getString(JsonConst.TYPE);
+
                         switch (requestType) {
-                            case JsonConst.TYPE_EMAIL_SIGNIN_REQUEST:
+                            case JsonConst.TYPE_EMAIL_SIGNIN_REQUEST://"signin":                              
                                 String email = JsonUtil.convertFromJsonEmail(jsonObject);
-                                int userId = database.DatabaseHandler.checkEmail(email);
+                                int userId = DatabaseHandler.checkEmail(email);
                                 sendToOneClient(JsonUtil.convertToJsonEmailResponse(userId) + "");
                                 break;
                             case JsonConst.TYPE_PASSWORD_SIGNIN_REQUEST:
                                 int id = JsonUtil.convertFromJsonId(jsonObject);
                                 String password = JsonUtil.convertFromJsonPasswordd(jsonObject);
-                                boolean passFlag = database.DatabaseHandler.checkPassword(id, password);
-                                //sendToOneClient(passFlag + "");
+                                boolean passFlag = DatabaseHandler.checkPassword(id, password);
                                 sendToOneClient(JsonUtil.convertToJsonPasswordResponse(passFlag) + "");
                                 break;
+                            case JsonConst.TYPE_SIGNUP_REQUEST:
+                                UserModel user = JsonUtil.converetFromJsonUserModel(jsonObject);
+                                boolean insetFlag = DatabaseHandler.insertUser(user); //Shoud Return ID to cheek if existes
+                                //convertToJsonPasswordResponse //ChangeName to parseBoolean with Key parseBoolean
+                                sendToOneClient(JsonUtil.convertToJsonPasswordResponse(insetFlag) + "");
+                                break;
                         }
-                        break;
+                    //break;
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,7 +113,17 @@ public class ClientHandler extends Thread {
      * @param msg to be sent to one client
      */
     public void sendToOneClient(String msg) {
+
+        //try {
+        System.out.println("Before sleep");
+        //sleep(10000);
         ps.println(msg);
+        System.out.println("After Sleep");
+        //clientThreads.get(index).ps.println(msg);
+        //psStatic.println(msg);    
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**
