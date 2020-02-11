@@ -5,10 +5,7 @@
  */
 package serverapplication;
 
-import model.UserModel;
 import database.DatabaseHandler;
-import help.JsonConst;
-import help.JsonUtil;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -18,8 +15,8 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.JsonObject;
-import model.CommentModel;
-import model.TaskModel;
+import model.*;
+import help.*;
 
 /**
  *
@@ -90,7 +87,7 @@ public class ClientHandler extends Thread {
                                 //convertToJsonPasswordResponse //ChangeName to parseBoolean with Key parseBoolean
                                 sendToOneClient(JsonUtil.convertToJsonPasswordResponse(insetFlag) + "");
                                 break;
-                                  case JsonConst.TYPE_ADD_TASK_REQUEST:
+                            case JsonConst.TYPE_ADD_TASK_REQUEST:
                                 TaskModel task = JsonUtil.toTaskModel(jsonObject);
                                 //database query
                                 JsonObject jTaskId = JsonUtil.fromId(DatabaseHandler.insertTask(task));
@@ -102,6 +99,26 @@ public class ClientHandler extends Thread {
                                 JsonObject Jobj = JsonUtil.fromListOfUsers(users);
                                 sendToOneClient(Jobj.toString());
                                 break;
+                            case JsonConst.TYPE_Add_COLLABORATOR:
+                                CollaboratorModel collaborator = JsonUtil.toCollaborator(jsonObject);
+                                boolean collaborateFlag = DatabaseHandler.insertCollaborator(collaborator.getList_id(), collaborator.getUser_id());
+                                sendToOneClient(JsonUtil.convertToJsonPasswordResponse(collaborateFlag) + "");// ChangeName of Method
+                                break;
+                            case JsonConst.TYPE_REMOVE_COLLABORATOR:
+                                collaborator = JsonUtil.toCollaborator(jsonObject);
+                                collaborateFlag = DatabaseHandler.deleteCollaborator(collaborator.getList_id(), collaborator.getUser_id());
+                                sendToOneClient(JsonUtil.convertToJsonPasswordResponse(collaborateFlag) + "");// ChangeName of Method
+                                break;
+                            case JsonConst.TYPE_INSERT_LIST:
+                                ListModel list = JsonUtil.toListModel(jsonObject);
+                                int list_id = DatabaseHandler.insertList(list);
+                                sendToOneClient(JsonUtil.convertToJsonEmailResponse(list_id).toString());// ChangeName of Method
+                                break;
+                            case JsonConst.TYPE_UPDATE_LIST:
+                                list = JsonUtil.toListModel(jsonObject);
+                                list_id = DatabaseHandler.updateList(list);
+                                sendToOneClient(JsonUtil.convertToJsonEmailResponse(list_id).toString());// ChangeName of Method
+                                break;
                             case JsonConst.TYPE_ADD_COMMENT_REQUEST:
                                 CommentModel comment = JsonUtil.toCommentModel(jsonObject);
                                 boolean commentInserted = DatabaseHandler.insertComment(comment);
@@ -112,6 +129,11 @@ public class ClientHandler extends Thread {
                                 JsonObject jComments = JsonUtil.fromListOfComments(DatabaseHandler.selectAllComments(taskId));
                                 System.out.println(jComments.toString());
                                 sendToOneClient(jComments.toString());
+                                break;
+                            case JsonConst.TYPE_GET_ALL_FRIENDS:
+                                userId = JsonUtil.convertFromJsonId(jsonObject);
+                                ArrayList<UserModel> teammates = DatabaseHandler.selectUserTeammates(userId);
+                                sendToOneClient(JsonUtil.fromListOfUsers(teammates) + "");
                                 break;
                         }
                     //break;

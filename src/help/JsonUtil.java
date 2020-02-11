@@ -66,7 +66,8 @@ public class JsonUtil {
         user.setPassword(obj.getString("password"));
         return user;
     }
-     public static TaskModel toTaskModel(JsonObject obj) {
+
+    public static TaskModel toTaskModel(JsonObject obj) {
         TaskModel task = new TaskModel();
         task.setTitle(obj.getString("title"));
         task.setDescription(obj.getString("description"));
@@ -149,5 +150,15 @@ public class JsonUtil {
                 .add("array", jArr)
                 .build();
         return obj;
+    }
+
+    public static ListModel toListModel(JsonObject obj) {
+        ListModel listModel = new ListModel();
+        listModel.setList_id(obj.getInt("list_id"));
+        listModel.setTitle(obj.getString("title"));
+        listModel.setColor(obj.getString("color"));
+        listModel.setCreate_date(Timestamp.valueOf(obj.getString("create_date")));
+        listModel.getUser().setId(obj.getInt("user_id"));
+        return listModel;
     }
 }

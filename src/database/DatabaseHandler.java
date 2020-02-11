@@ -301,7 +301,7 @@ public class DatabaseHandler {
      * @param user_id take user_id to define which user you want
      * @return ArrayList contains all user's list
      */
-    public static ArrayList<ListModel> selectUserList(int user_id) {
+   public static ArrayList<ListModel> selectUserList(int user_id) {
         ArrayList<ListModel> listModel = new ArrayList<>();
         try {
             pst = con.prepareStatement("SELECT * FROM list WHERE user_id=?");
@@ -313,7 +313,7 @@ public class DatabaseHandler {
                 listModelElement.setList_id(rs.getInt("list_id"));
                 listModelElement.setTitle(rs.getString("title"));
                 listModelElement.setColor(rs.getString("color"));
-                listModelElement.setUser_id(rs.getInt("user_id"));
+                listModelElement.getUser().setId(rs.getInt("user_id")); // edit
                 listModelElement.setCreate_date(rs.getTimestamp("create_date"));
                 listModel.add(listModelElement);
             }
@@ -329,24 +329,31 @@ public class DatabaseHandler {
      * @param user_id the owner of list
      * @param title of list
      * @param color of list
-     * @return true if insert success and false if insert failed
+     * @return id if insert success and -1 if insert failed
      */
-    public static boolean insertList(int user_id, String title, String color) {
-        boolean flag = true;
+    public static int insertList(ListModel list) {
+        int list_id = -1;
         try {
             pst = con.prepareStatement("INSERT INTO list (title, color, user_id) "
                     + "VALUES (?,?,?)");
-            pst.setString(1, title);
-            pst.setString(2, color);
-            pst.setInt(3, user_id);
-            pst.executeUpdate();
-
+            pst.setString(1, list.getTitle());
+            pst.setString(2, list.getColor());
+            pst.setInt(3, list.getUser().getId());
+            pst.executeUpdate();  
+            
+            pst = con.prepareStatement("SELECT LAST_INSERT_ID();");
+            pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                list_id = rs.getInt("LAST_INSERT_ID()");
+            }
+             
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-            flag = false;
         }
-        return flag;
+        return list_id;//list.getList_id();
     }
+    
 
     public static boolean deleteList(int list_id, int user_id) {
         boolean flag = true;
@@ -362,20 +369,18 @@ public class DatabaseHandler {
         return flag;
     }
 
-    public static boolean updateList(String title, String color, int list_id, int user_id) {
-        boolean flag = true;
+    public static int updateList(ListModel list) {
         try {
-            pst = con.prepareStatement("UPDATE list SET title =? ,color =? WHERE list_id =? AND user_id=?");
-            pst.setString(1, title);
-            pst.setString(2, color);
-            pst.setInt(3, list_id);
-            pst.setInt(4, user_id);
-            pst.executeUpdate();
+            pst = con.prepareStatement("UPDATE list SET title =? ,color =? WHERE list_id =?;");
+            pst.setString(1, list.getTitle());
+            pst.setString(2, list.getColor());
+            pst.setInt(3, list.getList_id());
+            pst.executeUpdate();                        
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-            flag = false;
+            list.setList_id(-1);
         }
-        return flag;
+        return list.getList_id();
     }
 
     public static int insertTask(TaskModel taskModel) {
@@ -425,12 +430,13 @@ public class DatabaseHandler {
         return flag;
     }
 
-    public static ArrayList<TaskModel> selectAllTasks(int list_id, String task_status) {
+    public static ArrayList<TaskModel> selectAllTasks(int list_id) {
         ArrayList<TaskModel> taskModelArray = new ArrayList<>();
         try {
-            pst = con.prepareStatement("SELECT * FROM task WHERE list_id=? AND task_status=?");
+            pst = con.prepareStatement("SELECT task.task_id, task.title, task.description, task.task_status, task.deadline,\n" +
+" task.list_id, task.user_id, task.assign_date, task.assign_status, user.name FROM task\n" +
+" inner join user on user.user_id=task.user_id where task.list_id=?;");
             pst.setInt(1, list_id);
-            pst.setString(2, task_status);
             pst.executeQuery();
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -442,6 +448,7 @@ public class DatabaseHandler {
                 taskModel.setDeadline(rs.getTimestamp("deadline"));
                 taskModel.setList_id(rs.getInt("list_id"));
                 taskModel.setUser_id(rs.getInt("user_id"));
+          //      taskModel.setUser_name(rs.getString("name")); pending discussion 
                 taskModel.setAssign_date(rs.getTimestamp("assign_date"));
                 taskModel.setAssign_status(rs.getString("assign_status"));
                 taskModelArray.add(taskModel);
@@ -528,12 +535,25 @@ public class DatabaseHandler {
         return flag;
     }
 
-    public static boolean deleteCollaborator(int list_id, int user_id) {
+   public static boolean deleteCollaborator(int list_id, int user_id) {
         boolean flag = true;
         try {
             pst = con.prepareStatement("DELETE FROM collaborator WHERE list_id=? AND user_id=?;");
             pst.setInt(1, list_id);
             pst.setInt(2, user_id);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            flag = false;
+        }
+        return flag;
+    }
+
+    public static boolean deleteCollaborator(int list_id) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("DELETE FROM collaborator WHERE list_id=?;");
+            pst.setInt(1, list_id);
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -586,27 +606,27 @@ public class DatabaseHandler {
     }
 // not used
 
-    public static TaskModel selectTask(int taskID) {
-        TaskModel taskModel = new TaskModel();
-        try {
-            pst = con.prepareStatement("select * FROM task WHERE task_id=?");
-            pst.setInt(1, taskID);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                taskModel.setTask_id(rs.getInt("task_id"));
-                taskModel.setTitle(rs.getString("title"));
-                taskModel.setDescription(rs.getString("description"));
-                taskModel.setTask_status(rs.getString("task_status"));
-                taskModel.setDeadline(rs.getTimestamp("deadline"));
-                taskModel.setList_id(rs.getInt("list_id"));
-                taskModel.setUser_id(rs.getInt("user_id"));
-                taskModel.setAssign_date(rs.getTimestamp("assign_date"));
-                taskModel.setAssign_status(rs.getString("assign_status"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return taskModel;
-    }
+//    public static TaskModel selectTask(int taskID) {
+//        TaskModel taskModel = new TaskModel();
+//        try {
+//            pst = con.prepareStatement("select * FROM task WHERE task_id=?");
+//            pst.setInt(1, taskID);
+//            ResultSet rs = pst.executeQuery();
+//            while (rs.next()) {
+//                taskModel.setTask_id(rs.getInt("task_id"));
+//                taskModel.setTitle(rs.getString("title"));
+//                taskModel.setDescription(rs.getString("description"));
+//                taskModel.setTask_status(rs.getString("task_status"));
+//                taskModel.setDeadline(rs.getTimestamp("deadline"));
+//                taskModel.setList_id(rs.getInt("list_id"));
+//                taskModel.setUser_id(rs.getInt("user_id"));
+//                taskModel.setAssign_date(rs.getTimestamp("assign_date"));
+//                taskModel.setAssign_status(rs.getString("assign_status"));
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return taskModel;
+//    }
 
 }

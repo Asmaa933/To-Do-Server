@@ -31,5 +31,7 @@ public class JsonConst {
     public static final String TYPE_ADD_TASK_REQUEST = "add_task_request";
     public static final String TYPE_ADD_COMMENT_REQUEST = "add_comment";
     public static final String TYPE_COMMENT_LIST_REQUEST = "comment_list_request";
+     public static final String TYPE_INSERT_LIST = "TYPE_INSERT_LIST";
+    public static final String TYPE_UPDATE_LIST = "TYPE_UPDATE_LIST";
 
 }

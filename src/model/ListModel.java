@@ -6,41 +6,43 @@
 package model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Mazen Mohamed
  */
 public class ListModel {
-    private int list_id;
-    private String title;
-    private String color;
-    private int user_id;
-    private Timestamp create_date;
+    private int list_id = -1;
+    private String title ="NewList";
+    private String color = "0xf4f4f4ff";
+    private UserModel user = new UserModel();
+    private Timestamp create_date= Timestamp.valueOf(LocalDateTime.now());
 
+    
     public ListModel() {
         
     }
 
-    public ListModel(int list_id, String title, String color, int user_id, Timestamp create_date) {
+    public ListModel(int list_id, String title, String color, UserModel user, Timestamp create_date) {
         this.list_id = list_id;
         this.title = title;
         this.color = color;
-        this.user_id = user_id;
+        this.user = user;
         this.create_date = create_date;
     }
     
-    public ListModel(String title, String color, Timestamp create_date) {
     
+    public ListModel(String title, String color, Timestamp create_date) {
         this.title = title;
         this.color = color;
         this.create_date = create_date;
     }
 
-    public ListModel(String title, String color, int user_id) {
+    public ListModel(String title, String color, UserModel user) {
         this.title = title;
         this.color = color;
-        this.user_id = user_id;
+        this.user = user;
     }
 
     public int getList_id() {
@@ -67,12 +69,12 @@ public class ListModel {
         this.color = color;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public UserModel getUser() {
+        return user;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 
     public Timestamp getCreate_date() {
