@@ -5,21 +5,21 @@
  */
 package help;
 
-import model.UserModel;
 import javax.json.Json;
 import javax.json.JsonObject;
 import java.io.StringReader;
+import java.sql.Timestamp;
+import java.util.List;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonReader;
+import model.*;
 
 /**
  *
  * @author remon
  */
 public class JsonUtil {
-
-    public static void main(String[] args) {
-
-    }
 
     public static String convertFromJsonEmail(JsonObject obj) {
         return obj.getString(JsonConst.EMAIL);
@@ -33,7 +33,7 @@ public class JsonUtil {
         return obj;
     }
 
-    public static String convertFromJsonPasswordd(JsonObject obj) {
+    public static String convertFromJsonPassword(JsonObject obj) {
         return obj.getString(JsonConst.PASSWORD);
     }
 
@@ -66,5 +66,88 @@ public class JsonUtil {
         user.setPassword(obj.getString("password"));
         return user;
     }
-    
+     public static TaskModel toTaskModel(JsonObject obj) {
+        TaskModel task = new TaskModel();
+        task.setTitle(obj.getString("title"));
+        task.setDescription(obj.getString("description"));
+        task.setTask_status(obj.getString("task_status"));
+        task.setAssign_date(Timestamp.valueOf(obj.getString("assign_date")));
+        task.setDeadline(Timestamp.valueOf(obj.getString("deadline")));
+        task.setList_id(obj.getInt("list_id"));
+        task.setUser_id(obj.getInt("user_id"));
+        task.setAssign_status(obj.getString("assign_status"));
+        return task;
+    }
+
+    public JsonArrayBuilder createJsonArrayFromList(List<UserModel> users) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (UserModel user : users) {
+            jsonArray.add(Json.createObjectBuilder()
+                    .add("id", user.getId())
+                    .add("name", user.getName())
+                    .add("email", user.getEmail())
+                    .add("online_status", user.getOnline_status()));
+        }
+        jsonArray.build();
+
+        return jsonArray;
+    }
+
+    public static JsonObject fromListOfUsers(List<UserModel> users) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (UserModel user : users) {
+            jsonArray.add(Json.createObjectBuilder()
+                    .add("id", user.getId())
+                    .add("name", user.getName())
+                    .add("email", user.getEmail())
+                    .add("online_status", user.getOnline_status())
+                    .build());
+        }
+        JsonArray jArr = jsonArray.build();
+
+        JsonObject obj = Json.createObjectBuilder()
+                .add("type", JsonConst.TYPE_FRIENDS_LIST)
+                .add("array", jArr)
+                .build();
+        return obj;
+    }
+
+    public static CollaboratorModel toCollaborator(JsonObject obj) {
+        CollaboratorModel collaboratorModel = new CollaboratorModel(obj.getInt(JsonConst.LIST_ID),
+                obj.getInt(JsonConst.USER_ID));
+        return collaboratorModel;
+    }
+
+    public static JsonObject fromId(int id) {
+        JsonObject obj = Json.createObjectBuilder()
+                .add(JsonConst.ID, id)
+                .build();
+        return obj;
+    }
+
+    public static CommentModel toCommentModel(JsonObject obj) {
+        CommentModel comment = new CommentModel();
+        comment.setTask_id(obj.getInt("task_id"));
+        comment.setUser_id(obj.getInt("user_id"));
+        comment.setComment_text(obj.getString("comment_text"));
+        comment.setComment_date(Timestamp.valueOf(obj.getString("comment_date")));
+        return comment;
+    }
+
+    public static JsonObject fromListOfComments(List<CommentModel> comments) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (CommentModel comment : comments) {
+            jsonArray.add(Json.createObjectBuilder()
+                    .add("name", comment.getUserName())
+                    .add("comment_date", comment.getComment_date().toString())
+                    .add("comment_text", comment.getComment_text())
+                    .build());
+        }
+        JsonArray jArr = jsonArray.build();
+
+        JsonObject obj = Json.createObjectBuilder()
+                .add("array", jArr)
+                .build();
+        return obj;
+    }
 }

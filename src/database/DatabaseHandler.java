@@ -5,8 +5,7 @@
  */
 package database;
 
-import model.ListModel;
-import model.UserModel;
+import model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * DatabaseHandler is a Singleton to Handle Connection and CRUD Operation with
  * MYSQL Server. First -> Calling startConnection(); Method Last -> Calling
  * closeConnection(); Method
  *
@@ -170,7 +168,7 @@ public class DatabaseHandler {
      * @param id of user
      * @return true if user status updated successfully in database
      */
-    public static boolean updateUserOnLineStauts(String online_status, int id) {
+    public static boolean updateUserOnLineStatus(String online_status, int id) {
         try {
             pst = con.prepareStatement("UPDATE user SET online_status = ?  WHERE user_id=?");
             pst.setString(1, online_status);
@@ -192,7 +190,7 @@ public class DatabaseHandler {
      * @return true if the insertion was successful or false if the insertion
      * failed
      */
-    public static boolean insertTeamMate(int user_id_1, int user_id_2) {
+    public static boolean insertTeammate(int user_id_1, int user_id_2) {
         boolean flag = true;
         try {
             pst = con.prepareStatement("SELECT * FROM teammate WHERE user_id_1=? AND user_id_2=? OR user_id_1=? AND user_id_2=? ");
@@ -224,7 +222,7 @@ public class DatabaseHandler {
      * @param user_id_2 the user getting deleted
      * @return true if successful or false if failed
      */
-    public static boolean deleteTeammates(int user_id_1, int user_id_2) {
+    public static boolean deleteTeammate(int user_id_1, int user_id_2) {
         boolean flag = true;
         try {
             pst = con.prepareStatement("DELETE FROM teammate WHERE user_id_1=? AND user_id_2=? OR user_id_1=? AND user_id_2=?");
@@ -283,7 +281,7 @@ public class DatabaseHandler {
         boolean flag = true;
         try {
             if (teammate_status.equals(DatabaseHandler.TEAMMATE_STATUS.REJECTED)) {
-                deleteTeammates(user_id_1, user_id_2);
+                deleteTeammate(user_id_1, user_id_2);
             } else {
                 pst = con.prepareStatement("UPDATE teammate SET teammate_status=? WHERE user_id_1=? AND user_id_2=?");
                 pst.setString(1, teammate_status);
@@ -378,6 +376,237 @@ public class DatabaseHandler {
             flag = false;
         }
         return flag;
+    }
+
+    public static int insertTask(TaskModel taskModel) {
+        int taskId = -1;
+        try {
+            pst = con.prepareStatement("INSERT INTO task (title, description, task_status, deadline, list_id, user_id, assign_date, assign_status) VALUES (?,?,?,?,?,?,?,?)");
+            pst.setString(1, taskModel.getTitle());
+            pst.setString(2, taskModel.getDescription());
+            pst.setString(3, taskModel.getTask_status());
+            pst.setTimestamp(4, taskModel.getDeadline());
+            pst.setInt(5, taskModel.getList_id());
+            pst.setInt(6, taskModel.getUser_id());
+            pst.setTimestamp(7, taskModel.getAssign_date());
+            pst.setString(8, taskModel.getAssign_status());
+            pst.executeUpdate();
+
+            pst = con.prepareStatement("SELECT LAST_INSERT_ID()");
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                taskId = rs.getInt("LAST_INSERT_ID()");
+            }
+        } catch (SQLException ex) {
+            taskId = -2;
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return taskId;
+    }
+
+    public static boolean updateTask(TaskModel taskModel) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("UPDATE task SET title=?, description=?, task_status=?, daedline=?, list_id=?, user_id=?, assign_date=?, assign_status=? WHERE task_id=?");
+            pst.setString(1, taskModel.getTitle());
+            pst.setString(2, taskModel.getDescription());
+            pst.setString(3, taskModel.getTask_status());
+            pst.setTimestamp(4, taskModel.getDeadline());
+            pst.setInt(4, taskModel.getList_id());
+            pst.setInt(5, taskModel.getUser_id());
+            pst.setTimestamp(6, taskModel.getAssign_date());
+            pst.setString(7, taskModel.getAssign_status());
+            pst.setInt(8, taskModel.getTask_id());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            flag = false;
+        }
+        return flag;
+    }
+
+    public static ArrayList<TaskModel> selectAllTasks(int list_id, String task_status) {
+        ArrayList<TaskModel> taskModelArray = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("SELECT * FROM task WHERE list_id=? AND task_status=?");
+            pst.setInt(1, list_id);
+            pst.setString(2, task_status);
+            pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                TaskModel taskModel = new TaskModel();
+                taskModel.setTask_id(rs.getInt("task_id"));
+                taskModel.setTitle(rs.getString("title"));
+                taskModel.setDescription(rs.getString("description"));
+                taskModel.setTask_status(rs.getString("task_status"));
+                taskModel.setDeadline(rs.getTimestamp("deadline"));
+                taskModel.setList_id(rs.getInt("list_id"));
+                taskModel.setUser_id(rs.getInt("user_id"));
+                taskModel.setAssign_date(rs.getTimestamp("assign_date"));
+                taskModel.setAssign_status(rs.getString("assign_status"));
+                taskModelArray.add(taskModel);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return taskModelArray;
+    }
+
+    public static boolean deleteTask(int task_id) {
+        boolean flag = true;
+        try {
+            deleteNotification(task_id);
+            deleteComment(task_id);
+            pst = con.prepareStatement("DELETE FROM task WHERE task_id=?");
+            pst.setInt(1, task_id);
+            pst.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            flag = false;
+        }
+        return flag;
+    }
+
+    public static boolean deleteNotification(int task_id) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("DELETE FROM notification WHERE task_id=?");
+            pst.setInt(1, task_id);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+
+    public static boolean deleteComment(int task_id) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("DELETE FROM comment WHERE task_id=?");
+            pst.setInt(1, task_id);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+
+    public static ArrayList<UserModel> selectListCollaborator(int list_id) {
+        ArrayList<UserModel> userModelArray = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("select user_id, name, email, online_status from user "
+                    + "where user_id in (SELECT user_id FROM collaborator where list_id = ?);");
+            pst.setInt(1, list_id);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                UserModel userModel = new UserModel();
+                userModel.setId(rs.getInt("user_id"));
+                userModel.setName(rs.getString("name"));
+                userModel.setEmail(rs.getString("email"));
+                userModel.setOnline_status(rs.getString("online_status"));
+                userModelArray.add(userModel);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userModelArray;
+    }
+
+    public static boolean insertCollaborator(int list_id, int user_id) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("INSERT INTO collaborator (`list_id`, `user_id`) VALUES (?, ?);");
+            pst.setInt(1, list_id);
+            pst.setInt(2, user_id);
+            pst.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            flag = false;
+        }
+        return flag;
+    }
+
+    public static boolean deleteCollaborator(int list_id, int user_id) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("DELETE FROM collaborator WHERE list_id=? AND user_id=?;");
+            pst.setInt(1, list_id);
+            pst.setInt(2, user_id);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            flag = false;
+        }
+        return flag;
+    }
+
+    public static boolean insertComment(CommentModel comment) {
+        boolean insertFlag = true;
+        try {
+            pst = con.prepareStatement("INSERT INTO comment (task_id, user_id, comment_text, comment_date)"
+                    + " VALUES (?, ?, ?, ?);");
+            pst.setInt(1, comment.getTask_id());
+            pst.setInt(2, comment.getUser_id());
+            pst.setString(3, comment.getComment_text());
+            pst.setTimestamp(4, comment.getComment_date());
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            insertFlag = false;
+        }
+        return insertFlag;
+    }
+
+    public static ArrayList<CommentModel> selectAllComments(int task_id) {
+        ArrayList<CommentModel> commentModel = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("SELECT comment_id , task_id , comment.user_id ,name ,comment_text , comment_date "
+                    + "FROM comment "
+                    + "INNER JOIN user ON user.user_id = comment.user_id and comment.task_id = ?");
+            pst.setInt(1, task_id);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                CommentModel commentElement = new CommentModel();
+                commentElement.setComment_id(rs.getInt("comment_id"));
+                commentElement.setTask_id(rs.getInt("task_id"));
+                commentElement.setUser_id(rs.getInt("user_id"));
+                commentElement.setUserName(rs.getString("name"));
+                commentElement.setComment_text(rs.getString("comment_text"));
+                commentElement.setComment_date(rs.getTimestamp("comment_date"));
+                commentModel.add(commentElement);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return commentModel;
+    }
+// not used
+
+    public static TaskModel selectTask(int taskID) {
+        TaskModel taskModel = new TaskModel();
+        try {
+            pst = con.prepareStatement("select * FROM task WHERE task_id=?");
+            pst.setInt(1, taskID);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                taskModel.setTask_id(rs.getInt("task_id"));
+                taskModel.setTitle(rs.getString("title"));
+                taskModel.setDescription(rs.getString("description"));
+                taskModel.setTask_status(rs.getString("task_status"));
+                taskModel.setDeadline(rs.getTimestamp("deadline"));
+                taskModel.setList_id(rs.getInt("list_id"));
+                taskModel.setUser_id(rs.getInt("user_id"));
+                taskModel.setAssign_date(rs.getTimestamp("assign_date"));
+                taskModel.setAssign_status(rs.getString("assign_status"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return taskModel;
     }
 
 }

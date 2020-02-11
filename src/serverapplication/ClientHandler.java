@@ -13,10 +13,13 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.JsonObject;
+import model.CommentModel;
+import model.TaskModel;
 
 /**
  *
@@ -77,7 +80,7 @@ public class ClientHandler extends Thread {
                                 break;
                             case JsonConst.TYPE_PASSWORD_SIGNIN_REQUEST:
                                 int id = JsonUtil.convertFromJsonId(jsonObject);
-                                String password = JsonUtil.convertFromJsonPasswordd(jsonObject);
+                                String password = JsonUtil.convertFromJsonPassword(jsonObject);
                                 boolean passFlag = DatabaseHandler.checkPassword(id, password);
                                 sendToOneClient(JsonUtil.convertToJsonPasswordResponse(passFlag) + "");
                                 break;
@@ -86,6 +89,29 @@ public class ClientHandler extends Thread {
                                 boolean insetFlag = DatabaseHandler.insertUser(user); //Shoud Return ID to cheek if existes
                                 //convertToJsonPasswordResponse //ChangeName to parseBoolean with Key parseBoolean
                                 sendToOneClient(JsonUtil.convertToJsonPasswordResponse(insetFlag) + "");
+                                break;
+                                  case JsonConst.TYPE_ADD_TASK_REQUEST:
+                                TaskModel task = JsonUtil.toTaskModel(jsonObject);
+                                //database query
+                                JsonObject jTaskId = JsonUtil.fromId(DatabaseHandler.insertTask(task));
+                                sendToOneClient(jTaskId.toString());
+                                break;
+                            case JsonConst.TYPE_COLLABORATOR_LIST:
+                                ArrayList<UserModel> users = new ArrayList<>();
+                                users = DatabaseHandler.selectListCollaborator(1);
+                                JsonObject Jobj = JsonUtil.fromListOfUsers(users);
+                                sendToOneClient(Jobj.toString());
+                                break;
+                            case JsonConst.TYPE_ADD_COMMENT_REQUEST:
+                                CommentModel comment = JsonUtil.toCommentModel(jsonObject);
+                                boolean commentInserted = DatabaseHandler.insertComment(comment);
+                                sendToOneClient(JsonUtil.convertToJsonPasswordResponse(commentInserted).toString());
+                                break;
+                            case JsonConst.TYPE_COMMENT_LIST_REQUEST:
+                                int taskId = jsonObject.getInt(JsonConst.ID);
+                                JsonObject jComments = JsonUtil.fromListOfComments(DatabaseHandler.selectAllComments(taskId));
+                                System.out.println(jComments.toString());
+                                sendToOneClient(jComments.toString());
                                 break;
                         }
                     //break;

@@ -20,5 +20,16 @@ public class JsonConst {
     public static final String ID = "id";
     public static final String TYPE_PASSWORD_SIGNIN_RESPONSE = "password_signin_response";
     public static final String TYPE_SIGNUP_REQUEST = "signup_request";
+    public static final String TYPE_GET_ALL_FRIENDS = "type_get_all_friends";
+    public static final String TYPE_FRIENDS_LIST = "friends_list";
+    public static final String TYPE_COLLABORATOR_LIST = "collaborator_list";
+    public static final String TYPE_Add_COLLABORATOR = "add_collaborator";
+    public static final String USER_ID = "user_id";
+    public static final String LIST_ID = "list_id";
+    public static final String TYPE_REMOVE_COLLABORATOR = "remove_collaborator";
+    public static final String TYPE_ADD_LIST_REQUEST = "add_list_request";
+    public static final String TYPE_ADD_TASK_REQUEST = "add_task_request";
+    public static final String TYPE_ADD_COMMENT_REQUEST = "add_comment";
+    public static final String TYPE_COMMENT_LIST_REQUEST = "comment_list_request";
 
 }

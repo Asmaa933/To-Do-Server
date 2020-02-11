@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  * @author Mazen Mohamed
  */
 public class TaskModel {
-    private String task_id;
+    private int task_id;
     private String title;
     private String description;
     private String task_status;
@@ -37,7 +37,7 @@ public class TaskModel {
             
     }
 
-    public TaskModel(String task_id, String title, String description, String task_status, Timestamp deadline, int list_id, int user_id, Timestamp assign_date, String assign_status) {
+    public TaskModel(int task_id, String title, String description, String task_status, Timestamp deadline, int list_id, int user_id, Timestamp assign_date, String assign_status) {
         this.task_id = task_id;
         this.title = title;
         this.description = description;
@@ -49,11 +49,11 @@ public class TaskModel {
         this.assign_status = assign_status;
     }
 
-    public String getTask_id() {
+    public int getTask_id() {
         return task_id;
     }
 
-    public void setTask_id(String task_id) {
+    public void setTask_id(int task_id) {
         this.task_id = task_id;
     }
 
