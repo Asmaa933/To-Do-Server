@@ -409,20 +409,21 @@ public class DatabaseHandler {
         return taskId;
     }
 
-    public static boolean updateTask(TaskModel taskModel) {
+      public static boolean updateTask(TaskModel taskModel) {
         boolean flag = true;
         try {
-            pst = con.prepareStatement("UPDATE task SET title=?, description=?, task_status=?, daedline=?, list_id=?, user_id=?, assign_date=?, assign_status=? WHERE task_id=?");
+            pst = con.prepareStatement("UPDATE task SET title=?, description=?, task_status=?, deadline=?, list_id=?, user_id=?, assign_date=?, assign_status=? WHERE task_id=?");
             pst.setString(1, taskModel.getTitle());
             pst.setString(2, taskModel.getDescription());
             pst.setString(3, taskModel.getTask_status());
             pst.setTimestamp(4, taskModel.getDeadline());
-            pst.setInt(4, taskModel.getList_id());
-            pst.setInt(5, taskModel.getUser_id());
-            pst.setTimestamp(6, taskModel.getAssign_date());
-            pst.setString(7, taskModel.getAssign_status());
-            pst.setInt(8, taskModel.getTask_id());
+            pst.setInt(5, taskModel.getList_id());
+            pst.setInt(6, taskModel.getUser_id());
+            pst.setTimestamp(7, taskModel.getAssign_date());
+            pst.setString(8, taskModel.getAssign_status());
+            pst.setInt(9, taskModel.getTask_id());
             pst.executeUpdate();
+            System.out.println(pst.toString());
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
             flag = false;

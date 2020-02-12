@@ -135,6 +135,11 @@ public class ClientHandler extends Thread {
                                 ArrayList<UserModel> teammates = DatabaseHandler.selectUserTeammates(userId);
                                 sendToOneClient(JsonUtil.fromListOfUsers(teammates) + "");
                                 break;
+                            case JsonConst.TYPE_UPDATE_TASK_REQUEST:
+                                TaskModel updatedTask = JsonUtil.toUpdateTaskModel(jsonObject);
+                                JsonObject jUpdatedTask = JsonUtil.fromBoolean(DatabaseHandler.updateTask(updatedTask));
+                                sendToOneClient(jUpdatedTask.toString());
+                                break;
                         }
                     //break;
                 }
