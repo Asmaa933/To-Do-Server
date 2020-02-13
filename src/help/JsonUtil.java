@@ -186,4 +186,29 @@ public class JsonUtil {
     public static boolean toBoolean(JsonObject obj) {
         return obj.getBoolean("status");
     }
+    public static int getListID(JsonObject obj) {
+        return obj.getInt("list_id");
+    }
+     public static JsonObject fromListOfListModels(List<ListModel> lists) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (ListModel list : lists) {
+            jsonArray.add(Json.createObjectBuilder()
+                    .add("id", list.getList_id())
+                    .add("title", list.getTitle())
+                    .add("color", list.getColor())
+                    .add("createDate", list.getCreate_date().toString())
+                    .add("userid", list.getUser().getId())
+                    .add("username", list.getUser().getName())
+                    .add("useremail", list.getUser().getEmail())
+                    .add("userstates", list.getUser().getOnline_status())
+                    .build());
+        }
+        JsonArray jArr = jsonArray.build();
+
+        JsonObject obj = Json.createObjectBuilder()
+                .add("type", JsonConst.TYPE_SELECT_ALL_LIST)
+                .add("array", jArr)
+                .build();
+        return obj;
+    }
 }

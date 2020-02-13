@@ -149,6 +149,16 @@ public class ClientHandler extends Thread {
                                 }
                                 sendToOneClient(JsonUtil.fromBoolean(true).toString());
                                 break;
+                            case JsonConst.TYPE_SELECT_ALL_LIST:
+                                userID = JsonUtil.convertFromJsonId(jsonObject);
+                                JsonObject snedAllTask = JsonUtil.fromListOfListModels(DatabaseHandler.selectAllListOfUser(userID));
+                                sendToOneClient(snedAllTask.toString());
+                                break;
+                            case JsonConst.TYPE_SELECT_ALL_COLLABORATOR_LIST:
+                                userID = JsonUtil.convertFromJsonId(jsonObject);
+                                JsonObject sendAllCollaboratorTask = JsonUtil.fromListOfListModels(DatabaseHandler.selectAllListCollaboratorOfUser(userID));
+                                sendToOneClient(sendAllCollaboratorTask.toString());
+                                break;
                         }
                     //break;
                 }

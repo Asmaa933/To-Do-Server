@@ -301,7 +301,7 @@ public class DatabaseHandler {
      * @param user_id take user_id to define which user you want
      * @return ArrayList contains all user's list
      */
-   public static ArrayList<ListModel> selectUserList(int user_id) {
+    public static ArrayList<ListModel> selectUserList(int user_id) {
         ArrayList<ListModel> listModel = new ArrayList<>();
         try {
             pst = con.prepareStatement("SELECT * FROM list WHERE user_id=?");
@@ -339,21 +339,20 @@ public class DatabaseHandler {
             pst.setString(1, list.getTitle());
             pst.setString(2, list.getColor());
             pst.setInt(3, list.getUser().getId());
-            pst.executeUpdate();  
-            
+            pst.executeUpdate();
+
             pst = con.prepareStatement("SELECT LAST_INSERT_ID();");
             pst.executeQuery();
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 list_id = rs.getInt("LAST_INSERT_ID()");
             }
-             
+
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list_id;//list.getList_id();
     }
-    
 
     public static boolean deleteList(int list_id, int user_id) {
         boolean flag = true;
@@ -375,7 +374,7 @@ public class DatabaseHandler {
             pst.setString(1, list.getTitle());
             pst.setString(2, list.getColor());
             pst.setInt(3, list.getList_id());
-            pst.executeUpdate();                        
+            pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
             list.setList_id(-1);
@@ -409,7 +408,7 @@ public class DatabaseHandler {
         return taskId;
     }
 
-      public static boolean updateTask(TaskModel taskModel) {
+    public static boolean updateTask(TaskModel taskModel) {
         boolean flag = true;
         try {
             pst = con.prepareStatement("UPDATE task SET title=?, description=?, task_status=?, deadline=?, list_id=?, user_id=?, assign_date=?, assign_status=? WHERE task_id=?");
@@ -434,9 +433,9 @@ public class DatabaseHandler {
     public static ArrayList<TaskModel> selectAllTasks(int list_id) {
         ArrayList<TaskModel> taskModelArray = new ArrayList<>();
         try {
-            pst = con.prepareStatement("SELECT task.task_id, task.title, task.description, task.task_status, task.deadline,\n" +
-" task.list_id, task.user_id, task.assign_date, task.assign_status, user.name FROM task\n" +
-" inner join user on user.user_id=task.user_id where task.list_id=?;");
+            pst = con.prepareStatement("SELECT task.task_id, task.title, task.description, task.task_status, task.deadline,\n"
+                    + " task.list_id, task.user_id, task.assign_date, task.assign_status, user.name FROM task\n"
+                    + " inner join user on user.user_id=task.user_id where task.list_id=?;");
             pst.setInt(1, list_id);
             pst.executeQuery();
             ResultSet rs = pst.executeQuery();
@@ -449,7 +448,7 @@ public class DatabaseHandler {
                 taskModel.setDeadline(rs.getTimestamp("deadline"));
                 taskModel.setList_id(rs.getInt("list_id"));
                 taskModel.setUser_id(rs.getInt("user_id"));
-          //      taskModel.setUser_name(rs.getString("name")); pending discussion 
+                //      taskModel.setUser_name(rs.getString("name")); pending discussion 
                 taskModel.setAssign_date(rs.getTimestamp("assign_date"));
                 taskModel.setAssign_status(rs.getString("assign_status"));
                 taskModelArray.add(taskModel);
@@ -536,7 +535,7 @@ public class DatabaseHandler {
         return flag;
     }
 
-   public static boolean deleteCollaborator(int list_id, int user_id) {
+    public static boolean deleteCollaborator(int list_id, int user_id) {
         boolean flag = true;
         try {
             pst = con.prepareStatement("DELETE FROM collaborator WHERE list_id=? AND user_id=?;");
@@ -605,8 +604,70 @@ public class DatabaseHandler {
         }
         return commentModel;
     }
-// not used
 
+    /**
+     *
+     * @param user_id take user_id to define which user you want
+     * @return ArrayList contains all user's list
+     */
+    public static ArrayList<ListModel> selectAllListOfUser(int user_id) {
+        ArrayList<ListModel> listModel = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("SELECT list.list_id , list.title, list.color , list.user_id, "
+                    + "list.create_date, user.name, user.email, user.online_status FROM list"
+                    + " inner join user on list.user_id = user.user_id where list.user_id = ?");
+            pst.setInt(1, user_id);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                ListModel listModelElement = new ListModel();
+                listModelElement.setList_id(rs.getInt("list_id"));
+                listModelElement.setTitle(rs.getString("title"));
+                listModelElement.setColor(rs.getString("color"));
+                listModelElement.getUser().setId(rs.getInt("user_id"));
+                listModelElement.setCreate_date(rs.getTimestamp("create_date"));
+                listModelElement.getUser().setName(rs.getString("name"));
+                listModelElement.getUser().setEmail(rs.getString("email"));
+                listModelElement.getUser().setOnline_status(rs.getString("online_status"));
+                listModel.add(listModelElement);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listModel;
+    }
+
+    //13-2 editing
+    public static ArrayList<ListModel> selectAllListCollaboratorOfUser(int user_id) {
+        ArrayList<ListModel> listModel = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("SELECT list.list_id , list.title, list.color , list.user_id, list.create_date, user.name, user.email, user.online_status \n"
+                    + "FROM list inner join user on list.user_id = user.user_id \n"
+                    + "where list_id in (select list_id from collaborator where user_id = 4);");
+            pst.setInt(1, user_id);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                ListModel listModelElement = new ListModel();
+                listModelElement.setList_id(rs.getInt("list_id"));
+                listModelElement.setTitle(rs.getString("title"));
+                listModelElement.setColor(rs.getString("color"));
+                listModelElement.getUser().setId(rs.getInt("user_id"));
+                listModelElement.setCreate_date(rs.getTimestamp("create_date"));
+                listModelElement.getUser().setName(rs.getString("name"));
+                listModelElement.getUser().setEmail(rs.getString("email"));
+                listModelElement.getUser().setOnline_status(rs.getString("online_status"));
+                listModel.add(listModelElement);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listModel;
+    }
+
+// not used
 //    public static TaskModel selectTask(int taskID) {
 //        TaskModel taskModel = new TaskModel();
 //        try {
@@ -629,5 +690,4 @@ public class DatabaseHandler {
 //        }
 //        return taskModel;
 //    }
-
 }

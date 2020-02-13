@@ -35,5 +35,6 @@ public class JsonConst {
     public static final String TYPE_UPDATE_LIST = "TYPE_UPDATE_LIST";
     public static final String TYPE_UPDATE_TASK_REQUEST = "update_task_request";
     public static final String TYPE_CHANGE_ONLINE_STATUS = "change_online_status";
-
+    public static final String TYPE_SELECT_ALL_LIST = "TYPE_SELECT_ALL_LIST";
+    public static final String TYPE_SELECT_ALL_COLLABORATOR_LIST = "TYPE_SELECT_ALL_COLLABORATOR_LIST";
 }
