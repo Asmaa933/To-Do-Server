@@ -182,4 +182,8 @@ public class JsonUtil {
                 .build();
         return obj;
     }
+
+    public static boolean toBoolean(JsonObject obj) {
+        return obj.getBoolean("status");
+    }
 }

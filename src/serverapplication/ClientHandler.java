@@ -140,6 +140,15 @@ public class ClientHandler extends Thread {
                                 JsonObject jUpdatedTask = JsonUtil.fromBoolean(DatabaseHandler.updateTask(updatedTask));
                                 sendToOneClient(jUpdatedTask.toString());
                                 break;
+                            case JsonConst.TYPE_CHANGE_ONLINE_STATUS:
+                                int userID = JsonUtil.convertFromJsonId(jsonObject);
+                                if (JsonUtil.toBoolean(jsonObject)) {
+                                    DatabaseHandler.updateUserOnLineStatus("online", userID);
+                                } else {
+                                    DatabaseHandler.updateUserOnLineStatus("offline", userID);
+                                }
+                                sendToOneClient(JsonUtil.fromBoolean(true).toString());
+                                break;
                         }
                     //break;
                 }
