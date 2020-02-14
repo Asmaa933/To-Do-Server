@@ -149,6 +149,11 @@ public class ClientHandler extends Thread {
                                 }
                                 sendToOneClient(JsonUtil.fromBoolean(true).toString());
                                 break;
+                            case JsonConst.TYPE_GET_ALL_TASKS:
+                                int listID = JsonUtil.getListID(jsonObject);
+                                JsonObject tasksResponse = JsonUtil.fromListOfTasks(DatabaseHandler.selectAllTasks(listID));
+                                sendToOneClient(tasksResponse.toString());
+                                break;
                             case JsonConst.TYPE_SELECT_ALL_LIST:
                                 userID = JsonUtil.convertFromJsonId(jsonObject);
                                 JsonObject snedAllTask = JsonUtil.fromListOfListModels(DatabaseHandler.selectAllListOfUser(userID));

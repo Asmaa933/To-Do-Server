@@ -19,6 +19,7 @@ public class TaskModel {
     private Timestamp deadline;
     private int list_id;
     private int user_id;
+    private String user_name;
     private Timestamp assign_date;
     private String assign_status;
     
@@ -59,6 +60,14 @@ public class TaskModel {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public void setTitle(String title) {

@@ -211,4 +211,30 @@ public class JsonUtil {
                 .build();
         return obj;
     }
+      public static JsonObject fromListOfTasks(List<TaskModel> tasks) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (TaskModel task : tasks) {
+            jsonArray.add(Json.createObjectBuilder()
+                    .add(JsonConst.TYPE, JsonConst.TYPE_GET_ALL_TASKS)
+                    .add("task_id", task.getTask_id())
+                    .add("title", task.getTitle())
+                    .add("description", task.getDescription())
+                    .add("task_status", task.getTask_status())
+                    .add("deadline", task.getDeadline().toString())
+                    .add("list_id", task.getList_id())
+                    .add("user_id", task.getUser_id())
+                    .add("assign_date", task.getAssign_date().toString())
+                    .add("assign_status", task.getAssign_status())
+                    .add("user_name",task.getUser_name())
+                    .build());
+        }
+        JsonArray jArr = jsonArray.build();
+
+        JsonObject obj = Json.createObjectBuilder()
+                .add("type", JsonConst.TYPE_GET_ALL_TASKS)
+                .add("array", jArr)
+                .build();
+        return obj;
+    }
+   
 }

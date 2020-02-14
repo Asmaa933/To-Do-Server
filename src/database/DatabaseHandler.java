@@ -448,7 +448,7 @@ public class DatabaseHandler {
                 taskModel.setDeadline(rs.getTimestamp("deadline"));
                 taskModel.setList_id(rs.getInt("list_id"));
                 taskModel.setUser_id(rs.getInt("user_id"));
-                //      taskModel.setUser_name(rs.getString("name")); pending discussion 
+                taskModel.setUser_name(rs.getString("name"));
                 taskModel.setAssign_date(rs.getTimestamp("assign_date"));
                 taskModel.setAssign_status(rs.getString("assign_status"));
                 taskModelArray.add(taskModel);
