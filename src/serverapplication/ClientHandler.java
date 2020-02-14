@@ -173,6 +173,12 @@ public class ClientHandler extends Thread {
                                 UserModel userModel = DatabaseHandler.selectUser(userID);
                                 sendToOneClient(JsonUtil.convertToJsonUser(JsonConst.TYPE_SELECT_UESRMODEL, userModel).toString());
                                 break;
+                            case JsonConst.TYPE_SELECT_TASK_REQUEST:
+                                int userIDForTaskRequest = JsonUtil.getID(jsonObject);
+                                ArrayList<TaskModel> taskRequests = DatabaseHandler.getTaskRequestsForUser(userIDForTaskRequest, TaskModel.ASSIGN_STATUS.PENDING);
+                                JsonObject jTaskRequests = JsonUtil.fromListOfTaskRequests(taskRequests);
+                                sendToOneClient(jTaskRequests.toString());
+                                break;
                         }
                     //break;
                 }

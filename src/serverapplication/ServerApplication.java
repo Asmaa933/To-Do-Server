@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -23,8 +24,8 @@ public class ServerApplication extends Application {
         
         Scene scene = new Scene(root);
         stage.setResizable(false);
-        
-
+        stage.initStyle(StageStyle.UNDECORATED);
+       scene.getStylesheets().add(getClass().getResource("StyleSheet.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     

@@ -689,6 +689,31 @@ public class DatabaseHandler {
         }
         return userModel;
     }
+    public static ArrayList<TaskModel> getTaskRequestsForUser(int id, String assign_status) {
+        ArrayList<TaskModel> arrayOfTasks = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("select * from task where user_id=? and assign_status=?");
+            pst.setInt(1, id);
+            pst.setString(2, assign_status);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                TaskModel taskModel = new TaskModel();
+                taskModel.setTask_id(rs.getInt("task_id"));
+                taskModel.setTitle(rs.getString("title"));
+                taskModel.setDescription(rs.getString("description"));
+                taskModel.setTask_status(rs.getString("task_status"));
+                taskModel.setDeadline(rs.getTimestamp("deadline"));
+                taskModel.setList_id(rs.getInt("list_id"));
+                taskModel.setUser_id(rs.getInt("user_id"));
+                taskModel.setAssign_date(rs.getTimestamp("assign_date"));
+                taskModel.setAssign_status(rs.getString("assign_status"));
+                arrayOfTasks.add(taskModel);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arrayOfTasks;
+    }
 
 // not used
 //    public static TaskModel selectTask(int taskID) {

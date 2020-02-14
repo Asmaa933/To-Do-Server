@@ -6,6 +6,7 @@
 package serverapplication;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ public class ServerConnector extends Thread{
        Socket clientSocket;
         try {
             serverSocket = new ServerSocket(PORT_NO);
+            System.out.println(InetAddress.getLocalHost().getHostAddress());  
             while (true) {
                 clientSocket = serverSocket.accept();
                 new ClientHandler(clientSocket,++clientCounter);
