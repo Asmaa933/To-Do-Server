@@ -462,8 +462,8 @@ public class DatabaseHandler {
     public static boolean deleteTask(int task_id) {
         boolean flag = true;
         try {
-            deleteNotification(task_id);
-            deleteComment(task_id);
+           deleteNotification(task_id);
+           deleteComment(task_id);
             pst = con.prepareStatement("DELETE FROM task WHERE task_id=?");
             pst.setInt(1, task_id);
             pst.executeUpdate();

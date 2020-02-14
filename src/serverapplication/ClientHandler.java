@@ -150,7 +150,7 @@ public class ClientHandler extends Thread {
                                 sendToOneClient(JsonUtil.fromBoolean(true).toString());
                                 break;
                             case JsonConst.TYPE_GET_ALL_TASKS:
-                                int listID = JsonUtil.getListID(jsonObject);
+                                int listID = JsonUtil.getID(jsonObject);
                                 JsonObject tasksResponse = JsonUtil.fromListOfTasks(DatabaseHandler.selectAllTasks(listID));
                                 sendToOneClient(tasksResponse.toString());
                                 break;
@@ -163,6 +163,11 @@ public class ClientHandler extends Thread {
                                 userID = JsonUtil.convertFromJsonId(jsonObject);
                                 JsonObject sendAllCollaboratorTask = JsonUtil.fromListOfListModels(DatabaseHandler.selectAllListCollaboratorOfUser(userID));
                                 sendToOneClient(sendAllCollaboratorTask.toString());
+                                break;
+                            case JsonConst.TYPE_DELETE_TASK_REQUEST:
+                                int taskID = JsonUtil.getID(jsonObject);
+                                JsonObject isDeleted = JsonUtil.fromBoolean(DatabaseHandler.deleteTask(taskID));
+                                sendToOneClient(isDeleted.toString());
                                 break;
                         }
                     //break;

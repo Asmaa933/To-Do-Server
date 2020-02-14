@@ -186,8 +186,8 @@ public class JsonUtil {
     public static boolean toBoolean(JsonObject obj) {
         return obj.getBoolean("status");
     }
-    public static int getListID(JsonObject obj) {
-        return obj.getInt("list_id");
+    public static int getID(JsonObject obj) {
+        return obj.getInt(JsonConst.ID);
     }
      public static JsonObject fromListOfListModels(List<ListModel> lists) {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
