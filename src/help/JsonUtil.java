@@ -186,10 +186,12 @@ public class JsonUtil {
     public static boolean toBoolean(JsonObject obj) {
         return obj.getBoolean("status");
     }
+
     public static int getID(JsonObject obj) {
         return obj.getInt(JsonConst.ID);
     }
-     public static JsonObject fromListOfListModels(List<ListModel> lists) {
+
+    public static JsonObject fromListOfListModels(List<ListModel> lists) {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         for (ListModel list : lists) {
             jsonArray.add(Json.createObjectBuilder()
@@ -211,7 +213,8 @@ public class JsonUtil {
                 .build();
         return obj;
     }
-      public static JsonObject fromListOfTasks(List<TaskModel> tasks) {
+
+    public static JsonObject fromListOfTasks(List<TaskModel> tasks) {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         for (TaskModel task : tasks) {
             jsonArray.add(Json.createObjectBuilder()
@@ -225,7 +228,7 @@ public class JsonUtil {
                     .add("user_id", task.getUser_id())
                     .add("assign_date", task.getAssign_date().toString())
                     .add("assign_status", task.getAssign_status())
-                    .add("user_name",task.getUser_name())
+                    .add("user_name", task.getUser_name())
                     .build());
         }
         JsonArray jArr = jsonArray.build();
@@ -236,5 +239,16 @@ public class JsonUtil {
                 .build();
         return obj;
     }
-   
+
+    public static JsonObject convertToJsonUser(String type, UserModel user) {
+        JsonObject obj = Json.createObjectBuilder()
+                .add(JsonConst.TYPE, type)
+                .add("id", user.getId())
+                .add("name", user.getName())
+                .add("email", user.getEmail())
+                .add("online_status", user.getOnline_status())
+                .build();
+        return obj;
+    }
+
 }

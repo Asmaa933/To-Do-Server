@@ -638,13 +638,12 @@ public class DatabaseHandler {
         return listModel;
     }
 
-    //13-2 editing
     public static ArrayList<ListModel> selectAllListCollaboratorOfUser(int user_id) {
         ArrayList<ListModel> listModel = new ArrayList<>();
         try {
             pst = con.prepareStatement("SELECT list.list_id , list.title, list.color , list.user_id, list.create_date, user.name, user.email, user.online_status \n"
                     + "FROM list inner join user on list.user_id = user.user_id \n"
-                    + "where list_id in (select list_id from collaborator where user_id = 4);");
+                    + "where list_id in (select list_id from collaborator where user_id = ?);"); 
             pst.setInt(1, user_id);
             ResultSet rs = pst.executeQuery();
 
@@ -665,6 +664,30 @@ public class DatabaseHandler {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listModel;
+    }
+
+     /**
+     *
+     * @param user_id
+     * @return
+     */
+    public static UserModel selectUser(int user_id) {
+        UserModel userModel = new UserModel(-1, "", "", UserModel.ONLINE_STATUS.OFFLINE);
+        try {
+            pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id = ?");
+            pst.setInt(1, user_id);
+            
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                userModel.setId(rs.getInt("user_id"));
+                userModel.setName(rs.getString("name"));
+                userModel.setEmail(rs.getString("email"));
+                userModel.setOnline_status(rs.getString("online_status"));             
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userModel;
     }
 
 // not used

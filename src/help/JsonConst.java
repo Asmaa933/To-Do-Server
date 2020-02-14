@@ -39,4 +39,6 @@ public class JsonConst {
     public static final String TYPE_GET_ALL_TASKS= "get_tasks";
     public static final String TYPE_SELECT_ALL_LIST = "TYPE_SELECT_ALL_LIST";
     public static final String TYPE_SELECT_ALL_COLLABORATOR_LIST = "TYPE_SELECT_ALL_COLLABORATOR_LIST";
+    public static final String TYPE_SELECT_UESRMODEL = "TYPE_SELECT_UESRMODEL";
+
 }

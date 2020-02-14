@@ -94,10 +94,9 @@ public class ClientHandler extends Thread {
                                 sendToOneClient(jTaskId.toString());
                                 break;
                             case JsonConst.TYPE_COLLABORATOR_LIST:
-                                ArrayList<UserModel> users = new ArrayList<>();
-                                users = DatabaseHandler.selectListCollaborator(1);
-                                JsonObject Jobj = JsonUtil.fromListOfUsers(users);
-                                sendToOneClient(Jobj.toString());
+                                int ListId = JsonUtil.convertFromJsonId(jsonObject);
+                                ArrayList<UserModel> collaborators = DatabaseHandler.selectListCollaborator(ListId);
+                                sendToOneClient(JsonUtil.fromListOfUsers(collaborators) + "");
                                 break;
                             case JsonConst.TYPE_Add_COLLABORATOR:
                                 CollaboratorModel collaborator = JsonUtil.toCollaborator(jsonObject);
@@ -168,6 +167,11 @@ public class ClientHandler extends Thread {
                                 int taskID = JsonUtil.getID(jsonObject);
                                 JsonObject isDeleted = JsonUtil.fromBoolean(DatabaseHandler.deleteTask(taskID));
                                 sendToOneClient(isDeleted.toString());
+                                break;
+                            case JsonConst.TYPE_SELECT_UESRMODEL:
+                                userID = JsonUtil.convertFromJsonId(jsonObject);
+                                UserModel userModel = DatabaseHandler.selectUser(userID);
+                                sendToOneClient(JsonUtil.convertToJsonUser(JsonConst.TYPE_SELECT_UESRMODEL, userModel).toString());
                                 break;
                         }
                     //break;
