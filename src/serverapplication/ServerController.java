@@ -19,28 +19,43 @@ import javafx.scene.control.ToggleButton;
  * @author esma
  */
 public class ServerController implements Initializable {
-    
- @FXML
- private Button graphButton;
- @FXML
- private Label statusLabel;
-  @FXML
- private Label numOfUsersLabel;
-   @FXML
- private Label numOfOnlineLabel;
+
     @FXML
- private Label numOfOfflineLabel;
+    private Button graphButton;
     @FXML
- private ToggleButton serverToggleButton;
+    private Label statusLabel;
+    @FXML
+    private Label numOfUsersLabel;
+    @FXML
+    private Label numOfOnlineLabel;
+    @FXML
+    private Label numOfOfflineLabel;
+    @FXML
+    private ToggleButton serverToggleButton;
+    private ServerConnector serverConnector;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
-    @FXML 
-    private void btnStartPressed(ActionEvent event) {
-        
     }
-    
+
+    @FXML
+    private void btnStartPressed(ActionEvent event) {
+        if (serverToggleButton.isSelected()) {
+            //serverConnector.setIsRunning(true);
+            serverConnector = new ServerConnector();
+            serverConnector.startServer();
+
+            serverToggleButton.setText("Stop");
+            statusLabel.setText("Up and Running");
+            System.out.println("serever running");
+        } else {
+            //serverConnector.setIsRunning(false);
+            serverConnector.stopServer();
+            serverToggleButton.setText("Start");
+            statusLabel.setText("offline");
+            System.out.println("server off");
+        }
+    }
+
 }

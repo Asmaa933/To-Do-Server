@@ -16,21 +16,18 @@ import javafx.stage.Stage;
  *
  * @author esma
  */
-public class ServerApplication extends Application {
-    public static ServerConnector serverConnector;
-    
+public class ServerApplication extends Application {    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("ServerView.fxml"));
         
         Scene scene = new Scene(root);
-        stage.resizableProperty().setValue(Boolean.FALSE);
+        stage.setResizable(false);
+        
 
         stage.setScene(scene);
         stage.show();
-        
-        serverConnector = new ServerConnector();
-        serverConnector.startServer();
+    
     }
 
     /**

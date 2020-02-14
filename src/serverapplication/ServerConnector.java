@@ -43,5 +43,16 @@ public class ServerConnector extends Thread{
             Logger.getLogger(ServerConnector.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
-    
+    protected void stopServer() {
+        try {
+            serverSocket.close();
+            for (ClientHandler clientThread : ClientHandler.clientThreads) {
+                clientThread.closeConnection();
+            }
+
+            this.stop();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
