@@ -131,7 +131,7 @@ public class ClientHandler extends Thread {
                                 break;
                             case JsonConst.TYPE_GET_ALL_FRIENDS:
                                 userId = JsonUtil.convertFromJsonId(jsonObject);
-                                ArrayList<UserModel> teammates = DatabaseHandler.selectUserTeammates(userId);
+                                ArrayList<UserModel> teammates = DatabaseHandler.selectUserTeammates(userId, DatabaseHandler.TEAMMATE_STATUS.ACCEPTED);
                                 sendToOneClient(JsonUtil.fromListOfUsers(teammates) + "");
                                 break;
                             case JsonConst.TYPE_UPDATE_TASK_REQUEST:
@@ -178,6 +178,16 @@ public class ClientHandler extends Thread {
                                 ArrayList<TaskModel> taskRequests = DatabaseHandler.getTaskRequestsForUser(userIDForTaskRequest, TaskModel.ASSIGN_STATUS.PENDING);
                                 JsonObject jTaskRequests = JsonUtil.fromListOfTaskRequests(taskRequests);
                                 sendToOneClient(jTaskRequests.toString());
+                                break;
+                            case JsonConst.TYPE_GET_ALL_FRIENDS_REQUEST:
+                                userId = JsonUtil.convertFromJsonId(jsonObject);
+                                ArrayList<UserModel> firendsRequestes = DatabaseHandler.selectUserTeammates(userId, DatabaseHandler.TEAMMATE_STATUS.PENDING);
+                                sendToOneClient(JsonUtil.fromListOfUsers(firendsRequestes) + "");
+                                break;
+                            case JsonConst.TYPE_FRIENDS_REQUEST_UPDATE:
+                                TeammateModel teammateModel = JsonUtil.toTeammateModel(jsonObject);
+                                boolean teammateFlage = DatabaseHandler.updateTeammateStatus(teammateModel.getUser_id_1(), teammateModel.getUser_id_2(), teammateModel.getTeammate_status());
+                                sendToOneClient(JsonUtil.convertToJsonPasswordResponse(teammateFlage) + "");
                                 break;
                         }
                     //break;

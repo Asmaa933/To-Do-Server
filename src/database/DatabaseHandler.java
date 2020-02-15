@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class DatabaseHandler {
 
-    public static final class TEAMMATE_STATUS {
+   public static final class TEAMMATE_STATUS {  
 
         public static final String PENDING = "pending";
         public static final String ACCEPTED = "accepted";
@@ -243,7 +243,7 @@ public class DatabaseHandler {
      * @param user_id
      * @return
      */
-    public static ArrayList<UserModel> selectUserTeammates(int user_id) {
+    public static ArrayList<UserModel> selectUserTeammates(int user_id,String type) {
         ArrayList<UserModel> userModelArray = new ArrayList<>();
         try {
             pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id in ( "
@@ -251,9 +251,9 @@ public class DatabaseHandler {
                     + "union\n"
                     + "select user_id_2 from teammate where user_id_1 = ? and teammate_status = ?)");
             pst.setInt(1, user_id);
-            pst.setString(2, DatabaseHandler.TEAMMATE_STATUS.ACCEPTED);
+            pst.setString(2, type);
             pst.setInt(3, user_id);
-            pst.setString(4, DatabaseHandler.TEAMMATE_STATUS.ACCEPTED);
+            pst.setString(4, type);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 UserModel userModel = new UserModel();

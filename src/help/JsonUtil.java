@@ -270,4 +270,11 @@ public class JsonUtil {
                 .build();
         return obj;
     }
+    public static TeammateModel toTeammateModel(JsonObject obj) {
+        TeammateModel teammateModel = new TeammateModel();
+        teammateModel.setUser_id_1(obj.getInt("user_id_1"));
+        teammateModel.setUser_id_2(obj.getInt("user_id_2"));
+        teammateModel.setTeammate_status(obj.getString("teammate_status")); 
+        return teammateModel;
+    }
 }

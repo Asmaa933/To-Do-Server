@@ -12,9 +12,9 @@ import java.sql.Timestamp;
  * @author Mazen Mohamed
  */
 public class TaskModel {
-    private int task_id;
+    private int task_id=-1;
     private String title;
-    private String description;
+    private String description="";
     private String task_status;
     private Timestamp deadline;
     private int list_id;
