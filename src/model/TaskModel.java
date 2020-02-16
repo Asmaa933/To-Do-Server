@@ -12,9 +12,10 @@ import java.sql.Timestamp;
  * @author Mazen Mohamed
  */
 public class TaskModel {
-    private int task_id=-1;
+
+    private int task_id = -1;
     private String title;
-    private String description="";
+    private String description = "";
     private String task_status;
     private Timestamp deadline;
     private int list_id;
@@ -22,20 +23,24 @@ public class TaskModel {
     private String user_name;
     private Timestamp assign_date;
     private String assign_status;
-    
-    public static final class TASK_STATUS{
+
+    public static final class TASK_STATUS {
+
         public static final String TODO = "todo";
         public static final String INPROGRESS = "inprogress";
-        public static final String DONE = "done";   
+        public static final String DONE = "done";
     }
-    
-    public static final class ASSIGN_STATUS{
+
+    public static final class ASSIGN_STATUS {
+
         public static final String PENDING = "pending";
         public static final String ACCEPTED = "accepted";
+        public static final String REJECTED = "rejected";
+
     }
-    
+
     public TaskModel() {
-            
+
     }
 
     public TaskModel(int task_id, String title, String description, String task_status, Timestamp deadline, int list_id, int user_id, Timestamp assign_date, String assign_status) {
@@ -130,5 +135,4 @@ public class TaskModel {
         this.assign_status = assign_status;
     }
 
-    
 }

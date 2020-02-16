@@ -187,6 +187,21 @@ public class ClientHandler extends Thread {
                                 TeammateModel teammateModel = JsonUtil.toTeammateModel(jsonObject);
                                 boolean teammateFlage = DatabaseHandler.updateTeammateStatus(teammateModel.getUser_id_1(), teammateModel.getUser_id_2(), teammateModel.getTeammate_status());
                                 sendToOneClient(JsonUtil.convertToJsonPasswordResponse(teammateFlage) + "");
+                                break;                
+                            case JsonConst.TYPE_REJECT_TASK_REQUEST:
+                                int rejectedTaskId = JsonUtil.getID(jsonObject);
+                                boolean isNotificationDeleted = DatabaseHandler.deleteNotification(rejectedTaskId);
+                                boolean isTaskStatusUpdated = DatabaseHandler.updateTaskRequestStatus(rejectedTaskId, TaskModel.ASSIGN_STATUS.REJECTED);
+                                JsonObject jTaskRequestRejected;
+                                jTaskRequestRejected = JsonUtil.fromBoolean(isNotificationDeleted && isTaskStatusUpdated);
+                                sendToOneClient(jTaskRequestRejected.toString());
+                                break;
+                            case JsonConst.TYPE_ACCEPT_TASK_REQUEST:
+                                int acceptedTaskId = JsonUtil.getID(jsonObject);
+                                JsonObject jTaskRequestAccepted;
+                                boolean isTaskAcceptedSuccessfully = DatabaseHandler.updateTaskRequestStatus(acceptedTaskId, TaskModel.ASSIGN_STATUS.ACCEPTED);
+                                jTaskRequestAccepted = JsonUtil.fromBoolean(isTaskAcceptedSuccessfully);
+                                sendToOneClient(jTaskRequestAccepted.toString());
                                 break;
                         }
                     //break;

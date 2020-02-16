@@ -251,14 +251,22 @@ public class JsonUtil {
         return obj;
     }
 
+    public static TeammateModel toTeammateModel(JsonObject obj) {
+        TeammateModel teammateModel = new TeammateModel();
+        teammateModel.setUser_id_1(obj.getInt("user_id_1"));
+        teammateModel.setUser_id_2(obj.getInt("user_id_2"));
+        teammateModel.setTeammate_status(obj.getString("teammate_status"));
+        return teammateModel;
+    }
+
     public static JsonObject fromListOfTaskRequests(List<TaskModel> tasks) {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         for (TaskModel task : tasks) {
             jsonArray.add(Json.createObjectBuilder()
                     .add("title", task.getTitle())
                     .add("deadline", task.getDeadline().toString())
-                    //user id or user name for future use
-                    //.add("user_id", task.getUser_id())
+                    .add("user_id", task.getUser_id())
+                    .add("task_id", task.getTask_id())
                     .add("assign_date", task.getAssign_date().toString())
                     .build());
         }
@@ -269,12 +277,5 @@ public class JsonUtil {
                 .add("array", jArr)
                 .build();
         return obj;
-    }
-    public static TeammateModel toTeammateModel(JsonObject obj) {
-        TeammateModel teammateModel = new TeammateModel();
-        teammateModel.setUser_id_1(obj.getInt("user_id_1"));
-        teammateModel.setUser_id_2(obj.getInt("user_id_2"));
-        teammateModel.setTeammate_status(obj.getString("teammate_status")); 
-        return teammateModel;
     }
 }
