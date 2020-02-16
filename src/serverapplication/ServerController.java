@@ -5,22 +5,20 @@
  */
 package serverapplication;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
+import javafx.stage.Stage;
 
 /**
  *
@@ -70,7 +68,22 @@ public class ServerController implements Initializable {
             System.out.println("server off");
         }
     }
-
+     @FXML
+    private void btnChartPressed(ActionEvent event) {
+            Stage stageold = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stageold.hide();
+            Stage window = new Stage();
+            try {
+                ChartController chart = new ChartController();
+                chart.start(window);
+            } catch (Exception ex) {
+                Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+           window.setOnCloseRequest((ev) -> {
+               stageold.show();
+           });   
+    }
     @FXML
     private void getIpButton(ActionEvent event) throws UnknownHostException {
 //          Alert alert = new Alert(Alert.AlertType.INFORMATION);

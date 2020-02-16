@@ -33,7 +33,7 @@
             <Image url="@../images/logo3.png" />
          </image>
       </ImageView>
-      <Button id="lion" fx:id="graphButton" layoutX="319.0" layoutY="63.0" mnemonicParsing="false">
+      <Button id="lion" fx:id="graphButton" layoutX="319.0" layoutY="63.0" mnemonicParsing="false" onAction="#btnChartPressed">
          <graphic>
             <ImageView fitHeight="43.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                <image>

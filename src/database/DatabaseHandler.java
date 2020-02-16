@@ -714,7 +714,51 @@ public class DatabaseHandler {
         }
         return arrayOfTasks;
     }
+    public static int getUserCountOnStatus(String userStatus) {
+        int count = 0;
+        try {
+            pst = con.prepareStatement("select count(user_id) from user where online_status=?;");
+            pst.setString(1, userStatus);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        return count;
+    }
+
+    public static int allUserCount() {
+        int count = 0;
+        try {
+            pst = con.prepareStatement("select count(user_id) from user;");
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count(user_id)");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return count;
+    }
+
+    public static boolean updateTaskRequestStatus(int task_id, String assign_status) {
+        boolean flag = true;
+        try {
+            pst = con.prepareStatement("UPDATE task SET  assign_status=? WHERE task_id=?");
+            pst.setString(1, assign_status);
+            pst.setInt(2, task_id);
+            pst.executeUpdate();
+            System.out.println(pst.toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+            flag = false;
+        }
+        return flag;
+    }
 // not used
 //    public static TaskModel selectTask(int taskID) {
 //        TaskModel taskModel = new TaskModel();
