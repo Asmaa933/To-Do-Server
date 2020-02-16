@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ServerApplication.jar" size="57286" download="eager" />
+    <jar href="ServerApplication.jar" size="57073" download="eager" />
     <jar href="lib/javax.json-1.0.4.jar" size="85147" download="eager" />
     <jar href="lib/javax.json-api-1.0.jar" size="19754" download="eager" />
     <jar href="lib/mysql-connector-java-8.0.18.jar" size="2330539" download="eager" />

@@ -57,7 +57,7 @@ public class ServerController implements Initializable {
             //serverConnector.setIsRunning(true);
             serverConnector = new ServerConnector();
             serverConnector.startServer();
-                serverToggleButton.setId("red");
+            serverToggleButton.setId("red");
             serverToggleButton.setText("Stop");
             statusLabel.setText("Up and Running");
             System.out.println("serever running");
@@ -71,22 +71,20 @@ public class ServerController implements Initializable {
         }
     }
 
-//    @FXML
-//    private void getIpButton(ActionEvent event) throws UnknownHostException {
+    @FXML
+    private void getIpButton(ActionEvent event) throws UnknownHostException {
 //          Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //                        alert.setHeaderText(null);
 //                        alert.setTitle("Server IP");
 //                        alert.setContentText("server ip is " );
 //                        alert.showAndWait();
 //        
-//    }
+    }
 
     @FXML
     private void closePressed(ActionEvent event) {
         Platform.exit();
         System.exit(0);
     }
-     
-     
 
 }
