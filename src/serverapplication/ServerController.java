@@ -5,7 +5,11 @@
  */
 package serverapplication;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -67,15 +71,15 @@ public class ServerController implements Initializable {
         }
     }
 
-    @FXML
-    private void getIpButton(ActionEvent event) {
-          Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setHeaderText(null);
-                        alert.setTitle("Server IP");
-                        alert.setContentText("server ip is " );
-                        alert.showAndWait();
-        
-    }
+//    @FXML
+//    private void getIpButton(ActionEvent event) throws UnknownHostException {
+//          Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                        alert.setHeaderText(null);
+//                        alert.setTitle("Server IP");
+//                        alert.setContentText("server ip is " );
+//                        alert.showAndWait();
+//        
+//    }
 
     @FXML
     private void closePressed(ActionEvent event) {

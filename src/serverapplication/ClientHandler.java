@@ -36,7 +36,6 @@ public class ClientHandler extends Thread {
             dis = new DataInputStream(clientSocket.getInputStream());
             ps = new PrintStream(clientSocket.getOutputStream());
             clientThreads.add(this);
-            System.out.println("ipSOCKET= " + s.getRemoteSocketAddress().toString());
             start();
         } catch (IOException ex) {
             //clientThreads.remove(this);

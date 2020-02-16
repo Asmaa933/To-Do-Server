@@ -35,7 +35,6 @@ public class ServerConnector extends Thread{
        Socket clientSocket;
         try {
             serverSocket = new ServerSocket(PORT_NO);
-            System.out.println(InetAddress.getLocalHost().getHostAddress());  
             while (true) {
                 clientSocket = serverSocket.accept();
                 new ClientHandler(clientSocket,++clientCounter);
