@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class ListModel {
     private int list_id = -1;
     private String title ="NewList";
-    private String color = "0xf4f4f4ff";
+    private String color = "#0x2e86c1ff";
     private UserModel user = new UserModel();
     private Timestamp create_date= Timestamp.valueOf(LocalDateTime.now());
 

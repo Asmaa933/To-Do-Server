@@ -759,6 +759,36 @@ public class DatabaseHandler {
         }
         return flag;
     }
+    public static ArrayList<NotificationModel> getTaskNotificationsForUser(int id) {
+        ArrayList<NotificationModel> arrayOfNotifications = new ArrayList<>();
+        try {
+            pst = con.prepareStatement("SELECT notification.notification_id, notification.notification_date, "
+                    + "task.task_id , task.title as 'task.title', task.task_status, task.user_id, user.name, "
+                    + "task.list_id, list.title as 'list.title'\n"
+                    + "FROM task \n"
+                    + "inner join notification on task.task_id = notification.task_id \n"
+                    + "inner join user on task.user_id = user.user_id\n"
+                    + "inner join list on list.list_id = task.list_id\n"
+                    + "where task.task_status = 'done' and notification.user_id = ?\n"
+                    + "order by notification_date desc;");
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                NotificationModel notificationModel = new NotificationModel();
+                notificationModel.setNotification_id(rs.getInt("notification_id"));
+                notificationModel.setNotification_date(rs.getString("notification_date"));
+                notificationModel.setList_title(rs.getString("list.title"));
+                notificationModel.setTask_title(rs.getString("task.title"));
+                notificationModel.setUser_name(rs.getString("name"));
+                notificationModel.setTask_status(rs.getString("task_status"));
+                
+                arrayOfNotifications.add(notificationModel);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arrayOfNotifications;
+    }
 // not used
 //    public static TaskModel selectTask(int taskID) {
 //        TaskModel taskModel = new TaskModel();

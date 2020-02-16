@@ -278,4 +278,19 @@ public class JsonUtil {
                 .build();
         return obj;
     }
+     public static JsonObject fromListOfNotifications(List<NotificationModel> notifications) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (NotificationModel notification : notifications) {
+            jsonArray.add(Json.createObjectBuilder()
+                    .add("getNotification", notification.getNotification())                 
+                    .build());
+        }
+        JsonArray jArr = jsonArray.build();
+
+        JsonObject obj = Json.createObjectBuilder()
+                .add("type", JsonConst.TYPE_GET_Notification)
+                .add("array", jArr)
+                .build();
+        return obj;
+    }
 }

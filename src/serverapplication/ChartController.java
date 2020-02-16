@@ -29,8 +29,6 @@ public class ChartController extends Application {
     public static int allUser;
     public static int offline=0;
     public static int online;
-    ObservableList<String> questions = FXCollections.observableArrayList();
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         DatabaseHandler.startConnection();
