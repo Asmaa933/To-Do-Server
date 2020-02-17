@@ -7,10 +7,7 @@ package model;
 
 import java.sql.Timestamp;
 
-/**
- *
- * @author Mazen Mohamed
- */
+
 public class TaskModel {
 
     private int task_id = -1;

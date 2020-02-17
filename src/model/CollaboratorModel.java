@@ -5,10 +5,6 @@
  */
 package model;
 
-/**
- *
- * @author Mazen Mohamed
- */
 public class CollaboratorModel {
     private int list_id;
     private int user_id;

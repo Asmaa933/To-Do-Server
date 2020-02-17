@@ -14,30 +14,23 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import database.DatabaseHandler;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import model.UserModel;
 
 
-/**
- * FXML Controller class
- *
- * @author AhmedWagdy
- */
+
 public class ChartController extends Application {
    
-    public static int allUser;
-    public static int offline=0;
-    public static int online;
+    private int allUser;
+    private int offline=0;
+    private int online;
     @Override
     public void start(Stage primaryStage) throws Exception {
         DatabaseHandler.startConnection();
         allUser = DatabaseHandler.allUserCount();
         online = DatabaseHandler.getUserCountOnStatus(UserModel.ONLINE_STATUS.ONLINE);
         DatabaseHandler.closeConnection();
-        offline = allUser-online;
+        offline = allUser - online;
         //online++;
-        
         primaryStage.setTitle("User Status");
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Users");
@@ -63,7 +56,6 @@ public class ChartController extends Application {
         dataSeries3.getData().add(new XYChart.Data("Online User",online));
 
         stackedBarChart.getData().addAll(dataSeries1, dataSeries2, dataSeries3);
-
         VBox vbox = new VBox(stackedBarChart);
 
         Scene scene = new Scene(vbox, 400, 400);

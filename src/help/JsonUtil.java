@@ -15,10 +15,6 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonReader;
 import model.*;
 
-/**
- *
- * @author remon
- */
 public class JsonUtil {
 
     public static String convertFromJsonEmail(JsonObject obj) {
@@ -278,22 +274,24 @@ public class JsonUtil {
                 .build();
         return obj;
     }
-     public static JsonObject fromListOfNotifications(List<NotificationModel> notifications) {
+
+    public static JsonObject fromListOfNotifications(List<NotificationModel> notifications) {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         for (NotificationModel notification : notifications) {
             jsonArray.add(Json.createObjectBuilder()
-                    .add("getNotification", notification.getNotification())                 
+                    .add("getNotification", notification.getNotification())
                     .build());
         }
         JsonArray jArr = jsonArray.build();
 
         JsonObject obj = Json.createObjectBuilder()
-                .add("type", JsonConst.TYPE_GET_Notification)
+                .add("type", JsonConst.TYPE_GET_NOTIFICATION)
                 .add("array", jArr)
                 .build();
         return obj;
     }
-     public static JsonObject fromStatisticArray(int[] arrayOfActivity) {
+
+    public static JsonObject fromStatisticArray(int[] arrayOfActivity) {
         JsonObject obj = Json.createObjectBuilder()
                 .add("all_lists", arrayOfActivity[0])
                 .add("all_tasks", arrayOfActivity[1])

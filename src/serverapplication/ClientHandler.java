@@ -38,7 +38,6 @@ public class ClientHandler extends Thread {
             clientThreads.add(this);
             start();
         } catch (IOException ex) {
-            //clientThreads.remove(this);
             ex.printStackTrace();
         }
     }
@@ -61,7 +60,6 @@ public class ClientHandler extends Thread {
                         break;
 
                     default:
-                        System.out.println(str);
 
                         DatabaseHandler.startConnection();  // wrong
 
@@ -97,7 +95,7 @@ public class ClientHandler extends Thread {
                                 ArrayList<UserModel> collaborators = DatabaseHandler.selectListCollaborator(ListId);
                                 sendToOneClient(JsonUtil.fromListOfUsers(collaborators) + "");
                                 break;
-                            case JsonConst.TYPE_Add_COLLABORATOR:
+                            case JsonConst.TYPE_ADD_COLLABORATOR:
                                 CollaboratorModel collaborator = JsonUtil.toCollaborator(jsonObject);
                                 boolean collaborateFlag = DatabaseHandler.insertCollaborator(collaborator.getList_id(), collaborator.getUser_id());
                                 sendToOneClient(JsonUtil.convertToJsonPasswordResponse(collaborateFlag) + "");// ChangeName of Method
@@ -203,7 +201,7 @@ public class ClientHandler extends Thread {
                                 jTaskRequestAccepted = JsonUtil.fromBoolean(isTaskAcceptedSuccessfully);
                                 sendToOneClient(jTaskRequestAccepted.toString());
                                 break;
-                            case JsonConst.TYPE_GET_Notification:
+                            case JsonConst.TYPE_GET_NOTIFICATION:
                                 userId = JsonUtil.convertFromJsonId(jsonObject);
                                 ArrayList<NotificationModel> notificationModels = DatabaseHandler.getTaskNotificationsForUser(userId);
                                 sendToOneClient(JsonUtil.fromListOfNotifications(notificationModels) + "");
@@ -224,7 +222,7 @@ public class ClientHandler extends Thread {
                                 jAddFriendResponse = JsonUtil.fromBoolean(isFriendRequestSent);
                                 sendToOneClient(jAddFriendResponse.toString());
                                 break;
-                                 case JsonConst.TYPE_STATISTICS_REQUEST:
+                              case JsonConst.TYPE_STATISTICS_REQUEST:
                                 int statsUserId = JsonUtil.convertFromJsonId(jsonObject);
                                 int [] arr = new int[5];
                                 arr[0] = DatabaseHandler.selectCountOfAllList(statsUserId);
@@ -232,6 +230,8 @@ public class ClientHandler extends Thread {
                                 arr[2] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.TODO);
                                 arr[3] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.INPROGRESS);
                                 arr[4] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.DONE);
+                                JsonObject jStatsResponse = JsonUtil.fromStatisticArray(arr);
+                                sendToOneClient(jStatsResponse.toString());
                                 break;
                         }
                     //break;
@@ -260,16 +260,7 @@ public class ClientHandler extends Thread {
      */
     public void sendToOneClient(String msg) {
 
-        //try {
-        System.out.println("Before sleep");
-        //sleep(10000);
-        ps.println(msg);
-        System.out.println("After Sleep");
-        //clientThreads.get(index).ps.println(msg);
-        //psStatic.println(msg);    
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        ps.println(msg);     
     }
 
     /**

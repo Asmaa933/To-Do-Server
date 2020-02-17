@@ -5,11 +5,7 @@
  */
 package model;
 
-/**
- *
- * 
- * @author Mazen Mohamed
- */
+
 public class TeammateModel {
     private int user_id_1;
     private int user_id_2;

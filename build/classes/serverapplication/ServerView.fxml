@@ -6,34 +6,25 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="439.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="serverapplication.ServerController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="serverapplication.ServerController">
     <children>
-      <Label id="label2" fx:id="statusLabel" layoutX="137.0" layoutY="144.0" prefHeight="31.0" prefWidth="217.0" text="Off" />
-      <VBox layoutX="30.0" layoutY="270.0" prefHeight="130.0" prefWidth="180.0">
-         <children>
-            <Label id="label" prefHeight="40.0" prefWidth="158.0" text="Number of users :" textAlignment="CENTER" />
-            <Label id="label" prefHeight="40.0" prefWidth="165.0" text="Number of online users :" textAlignment="CENTER" />
-            <Label id="label" prefHeight="40.0" prefWidth="179.0" text="Number of offline users :" textAlignment="CENTER" />
-         </children>
-      </VBox>
-      <Label id="label" layoutX="30.0" layoutY="144.0" prefHeight="31.0" prefWidth="100.0" text="Server status :" textAlignment="CENTER" />
-      <VBox layoutX="259.0" layoutY="271.0" prefHeight="130.0" prefWidth="100.0">
-         <children>
-            <Label id="label2" fx:id="numOfUsersLabel" prefHeight="40.0" prefWidth="100.0" text="0" textAlignment="CENTER" />
-            <Label id="label2" fx:id="numOfOnlineLabel" prefHeight="40.0" prefWidth="100.0" text="0" textAlignment="CENTER" />
-            <Label id="label2" fx:id="numOfOfflineLabel" prefHeight="40.0" prefWidth="100.0" text="0" textAlignment="CENTER" />
-         </children>
-      </VBox>
-      <Button id="ip" fx:id="getIpButton" layoutX="354.0" layoutY="420.0" mnemonicParsing="false" onAction="#getIpButton" text="Get IP" visible="false" />
-      <ToggleButton id="green" fx:id="serverToggleButton" layoutX="179.0" layoutY="195.0" mnemonicParsing="false" onAction="#btnStartPressed" prefHeight="51.0" prefWidth="100.0" text="START" />
+      <Label id="label2" fx:id="statusLabel" layoutX="186.0" layoutY="308.0" prefHeight="31.0" prefWidth="154.0" text="Off">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <Label id="label" layoutX="39.0" layoutY="308.0" prefHeight="31.0" prefWidth="123.0" text="Server status :" textAlignment="CENTER">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <ToggleButton id="green" fx:id="serverToggleButton" layoutX="129.0" layoutY="156.0" mnemonicParsing="false" onAction="#btnStartPressed" prefHeight="100.0" prefWidth="183.0" text="START" />
       <ImageView fitHeight="90.0" fitWidth="100.0" layoutX="16.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/logo3.png" />
          </image>
       </ImageView>
-      <Button id="lion" fx:id="graphButton" layoutX="319.0" layoutY="63.0" mnemonicParsing="false" onAction="#btnChartPressed">
+      <Button id="lion" fx:id="graphButton" layoutX="340.0" layoutY="79.0" mnemonicParsing="false" onAction="#btnChartPressed" prefHeight="65.0" prefWidth="60.0">
          <graphic>
             <ImageView fitHeight="43.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -42,7 +33,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="close" layoutX="390.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closePressed" prefHeight="40.0" prefWidth="40.0">
+      <Button fx:id="close" layoutX="370.0" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closePressed" prefHeight="40.0" prefWidth="40.0">
          <graphic>
             <ImageView fitHeight="37.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
                <image>

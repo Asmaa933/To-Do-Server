@@ -8,10 +8,7 @@ package model;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-/**
- *
- * @author Mazen Mohamed
- */
+
 public class ListModel {
     private int list_id = -1;
     private String title ="NewList";

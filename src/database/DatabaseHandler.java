@@ -18,8 +18,7 @@ import java.util.logging.Logger;
 /**
  * MYSQL Server. First -> Calling startConnection(); Method Last -> Calling
  * closeConnection(); Method
- *
- * @author Mazen Mohamed
+*
  */
 public class DatabaseHandler {
 
@@ -246,14 +245,28 @@ public class DatabaseHandler {
     public static ArrayList<UserModel> selectUserTeammates(int user_id, String type) {
         ArrayList<UserModel> userModelArray = new ArrayList<>();
         try {
-            pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id in ( "
-                    + "select user_id_1 from teammate where user_id_2 = ? and teammate_status = ? "
-                    + "union\n"
-                    + "select user_id_2 from teammate where user_id_1 = ? and teammate_status = ?)");
-            pst.setInt(1, user_id);
-            pst.setString(2, type);
-            pst.setInt(3, user_id);
-            pst.setString(4, type);
+            if (type.equals(TeammateModel.TEAMMATE_STATUS.ACCEPTED)) {
+                pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id in ( "
+                        + "select user_id_1 from teammate where user_id_2 = ? and teammate_status = ? "
+                        + "union\n"
+                        + "select user_id_2 from teammate where user_id_1 = ? and teammate_status = ?)");
+
+                pst.setInt(1, user_id);
+                pst.setString(2, type);
+                pst.setInt(3, user_id);
+                pst.setString(4, type);
+            } else {
+                pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id \n"
+                        + "in ( select user_id_1 from teammate where user_id_2 = ? and teammate_status = ?);");
+
+                //"select user_id, name, email, online_status from user where user_id in ( "
+                //+ "select user_id_1 from teammate where user_id_2 = ? and teammate_status = ? ");
+//                        + "union\n"
+//                        + "select user_id_2 from teammate where user_id_1 = ? and teammate_status = ?)");
+                pst.setInt(1, user_id);
+                pst.setString(2, type);
+            }
+
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 UserModel userModel = new UserModel();
@@ -285,8 +298,8 @@ public class DatabaseHandler {
             } else {
                 pst = con.prepareStatement("UPDATE teammate SET teammate_status=? WHERE user_id_1=? AND user_id_2=?");
                 pst.setString(1, teammate_status);
-                pst.setInt(2, user_id_1);
-                pst.setInt(3, user_id_2);
+                pst.setInt(2, user_id_2);
+                pst.setInt(3, user_id_1);
                 pst.executeUpdate();
             }
         } catch (SQLException ex) {

@@ -5,10 +5,7 @@
  */
 package model;
 
-/**
- *
- * @author Mazen Mohamed
- */
+
 public class NotificationModel {
     private int notification_id;
     private String user_name;

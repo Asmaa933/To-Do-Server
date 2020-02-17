@@ -6,7 +6,6 @@
 package serverapplication;
 
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,15 +83,7 @@ public class ServerController implements Initializable {
                stageold.show();
            });   
     }
-    @FXML
-    private void getIpButton(ActionEvent event) throws UnknownHostException {
-//          Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                        alert.setHeaderText(null);
-//                        alert.setTitle("Server IP");
-//                        alert.setContentText("server ip is " );
-//                        alert.showAndWait();
-//        
-    }
+ 
 
     @FXML
     private void closePressed(ActionEvent event) {

@@ -5,10 +5,7 @@
  */
 package model;
 
-/**
- *
- * @author Mazen Mohamed
- */
+
 public class UserModel {
     private int id;
     private String name;

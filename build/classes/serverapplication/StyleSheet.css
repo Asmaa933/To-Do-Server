@@ -41,7 +41,6 @@ and open the template in the editor.
             linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
     -fx-background-insets: 0 0 -1 0,0,1;
     -fx-background-radius: 5,5,4;
-    -fx-padding: 3 30 3 30;
     -fx-text-fill: #242d35;
     -fx-font-size: 14px;
 }
@@ -58,34 +57,26 @@ and open the template in the editor.
 }
 
 #green {
-   /* -fx-background-color:
-            #000000,
-            linear-gradient(#7ebcea, #2f4b8f),
-            linear-gradient(#426ab7, #263e75),
-            linear-gradient(#395cab, #223768);*/
+
     -fx-background-color: #148f77  ;
     -fx-background-insets: 0,1,2,3;
     -fx-background-radius: 3,2,2,2;
     -fx-padding: 12 30 12 30;
     -fx-text-fill: white;
-    -fx-font-size: 12px;
+    -fx-font-size: 25px;
     -fx-font-weight:bold;
 }
 #blue Text {
     -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
 }
 #red {
-    /*-fx-background-color:
-            #000000,
-            linear-gradient(#7ebcea, #2f4b8f),
-            linear-gradient(#426ab7, #263e75),
-            linear-gradient(#395cab, #223768);*/
+    
     -fx-background-color: #e74c3c ;
     -fx-background-insets: 0,1,2,3;
     -fx-background-radius: 3,2,2,2;
     -fx-padding: 12 30 12 30;
     -fx-text-fill: white;
-    -fx-font-size: 12px;
+    -fx-font-size: 18px;
     -fx-font-weight:bold;
 }
 #blue:hover {
@@ -106,11 +97,11 @@ and open the template in the editor.
 #label{
     -fx-text-fill:#242d35;
     -fx-font-weight:bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 17px;
 }
 #label2{
     -fx-text-fill:#426ab7;
     -fx-font-weight:bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 17px;
     
 }
