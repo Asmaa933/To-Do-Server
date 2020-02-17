@@ -50,5 +50,6 @@ public class JsonConst {
     public static final String SENDER_ID = "sender_id";
     public static final String RECIEVER_EMAIL = "reciever_email";
     public static final String TYPE_STATISTICS_REQUEST = "type_statistics_request";
+    public static final String TYPE_DELETE_LIST = "TYPE_DELETE_LIST";
 
 }

@@ -367,12 +367,13 @@ public class DatabaseHandler {
         return list_id;//list.getList_id();
     }
 
-    public static boolean deleteList(int list_id, int user_id) {
+   public static boolean deleteList(int list_id) {
         boolean flag = true;
         try {
-            pst = con.prepareStatement("DELETE FROM list WHERE list_id=? AND user_id=?");
+            
+            pst = con.prepareStatement("DELETE FROM list WHERE list_id=? ");
             pst.setInt(1, list_id);
-            pst.setInt(2, user_id);
+            
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);

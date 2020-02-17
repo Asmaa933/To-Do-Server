@@ -212,6 +212,8 @@ public class ClientHandler extends Thread {
                                 //if the id is not -1 then the friend is found
                                 if (recieverId == -1) {
                                     //handle that the user is not found vs. is already friend
+                                } else if (senderId == recieverId) {
+                                    isFriendRequestSent = false;
                                 } else {
                                     isFriendRequestSent = DatabaseHandler.insertTeammate(senderId, recieverId);
                                 }
@@ -229,6 +231,12 @@ public class ClientHandler extends Thread {
                                 JsonObject jStatsResponse = JsonUtil.fromStatisticArray(arr);
                                 sendToOneClient(jStatsResponse.toString());
                                 break;
+//                            case JsonConst.TYPE_DELETE_LIST:
+//                                int listDelete = JsonUtil.getID(jsonObject);
+//                                boolean listdeleteflage = DatabaseHandler.deleteList(listDelete);
+//                                JsonObject deleteResponselist = JsonUtil.fromBoolean(listdeleteflage);
+//                                sendToOneClient(deleteResponselist.toString());
+//                                break;
                         }
                     //break;
                 }
