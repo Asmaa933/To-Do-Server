@@ -36,7 +36,7 @@ public class JsonConst {
     public static final String TYPE_UPDATE_TASK_REQUEST = "update_task_request";
     public static final String TYPE_DELETE_TASK_REQUEST = "delete_task_request";
     public static final String TYPE_CHANGE_ONLINE_STATUS = "change_online_status";
-    public static final String TYPE_GET_ALL_TASKS= "get_tasks";
+    public static final String TYPE_GET_ALL_TASKS = "get_tasks";
     public static final String TYPE_SELECT_ALL_LIST = "TYPE_SELECT_ALL_LIST";
     public static final String TYPE_SELECT_ALL_COLLABORATOR_LIST = "TYPE_SELECT_ALL_COLLABORATOR_LIST";
     public static final String TYPE_SELECT_UESRMODEL = "TYPE_SELECT_UESRMODEL";
@@ -45,6 +45,10 @@ public class JsonConst {
     public static final String TYPE_FRIENDS_REQUEST_UPDATE = "TYPE_FRIENDS_REQUEST_UPDATE";
     public static final String TYPE_REJECT_TASK_REQUEST = "TYPE_REJECT_TASK_REQUEST";
     public static final String TYPE_ACCEPT_TASK_REQUEST = "TYPE_ACCEPT_TASK_REQUEST";
-        public static final String TYPE_GET_Notification = "TYPE_GET_Notification";
+    public static final String TYPE_GET_Notification = "TYPE_GET_Notification";
+    public static final String TYPE_ADD_FRIEND_REQUEST = "type_add_friend_request";
+    public static final String SENDER_ID = "sender_id";
+    public static final String RECIEVER_EMAIL = "reciever_email";
+    public static final String TYPE_STATISTICS_REQUEST = "type_statistics_request";
 
 }

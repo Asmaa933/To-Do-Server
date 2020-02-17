@@ -208,6 +208,31 @@ public class ClientHandler extends Thread {
                                 ArrayList<NotificationModel> notificationModels = DatabaseHandler.getTaskNotificationsForUser(userId);
                                 sendToOneClient(JsonUtil.fromListOfNotifications(notificationModels) + "");
                                 break;
+                            case JsonConst.TYPE_ADD_FRIEND_REQUEST:
+                                boolean isFriendRequestSent = false;
+                                JsonObject jAddFriendResponse;
+                                int senderId = JsonUtil.getID(jsonObject);
+                                String recieverEmail = JsonUtil.convertFromJsonEmail(jsonObject);
+                                int recieverId = DatabaseHandler.checkEmail(recieverEmail);
+                                System.out.println(recieverId);
+                                //if the id is not -1 then the friend is found
+                                if (recieverId == -1) {
+                                    //handle that the user is not found vs. is already friend
+                                } else {
+                                    isFriendRequestSent = DatabaseHandler.insertTeammate(senderId, recieverId);
+                                }
+                                jAddFriendResponse = JsonUtil.fromBoolean(isFriendRequestSent);
+                                sendToOneClient(jAddFriendResponse.toString());
+                                break;
+                                 case JsonConst.TYPE_STATISTICS_REQUEST:
+                                int statsUserId = JsonUtil.convertFromJsonId(jsonObject);
+                                int [] arr = new int[5];
+                                arr[0] = DatabaseHandler.selectCountOfAllList(statsUserId);
+                                arr[1] = DatabaseHandler.selectCountOfAllTasks(statsUserId);
+                                arr[2] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.TODO);
+                                arr[3] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.INPROGRESS);
+                                arr[4] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.DONE);
+                                break;
                         }
                     //break;
                 }

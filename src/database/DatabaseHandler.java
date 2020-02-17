@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class DatabaseHandler {
 
-   public static final class TEAMMATE_STATUS {  
+    public static final class TEAMMATE_STATUS {
 
         public static final String PENDING = "pending";
         public static final String ACCEPTED = "accepted";
@@ -243,7 +243,7 @@ public class DatabaseHandler {
      * @param user_id
      * @return
      */
-    public static ArrayList<UserModel> selectUserTeammates(int user_id,String type) {
+    public static ArrayList<UserModel> selectUserTeammates(int user_id, String type) {
         ArrayList<UserModel> userModelArray = new ArrayList<>();
         try {
             pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id in ( "
@@ -462,8 +462,8 @@ public class DatabaseHandler {
     public static boolean deleteTask(int task_id) {
         boolean flag = true;
         try {
-           deleteNotification(task_id);
-           deleteComment(task_id);
+            deleteNotification(task_id);
+            deleteComment(task_id);
             pst = con.prepareStatement("DELETE FROM task WHERE task_id=?");
             pst.setInt(1, task_id);
             pst.executeUpdate();
@@ -643,7 +643,7 @@ public class DatabaseHandler {
         try {
             pst = con.prepareStatement("SELECT list.list_id , list.title, list.color , list.user_id, list.create_date, user.name, user.email, user.online_status \n"
                     + "FROM list inner join user on list.user_id = user.user_id \n"
-                    + "where list_id in (select list_id from collaborator where user_id = ?);"); 
+                    + "where list_id in (select list_id from collaborator where user_id = ?);");
             pst.setInt(1, user_id);
             ResultSet rs = pst.executeQuery();
 
@@ -666,7 +666,7 @@ public class DatabaseHandler {
         return listModel;
     }
 
-     /**
+    /**
      *
      * @param user_id
      * @return
@@ -676,19 +676,20 @@ public class DatabaseHandler {
         try {
             pst = con.prepareStatement("select user_id, name, email, online_status from user where user_id = ?");
             pst.setInt(1, user_id);
-            
+
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 userModel.setId(rs.getInt("user_id"));
                 userModel.setName(rs.getString("name"));
                 userModel.setEmail(rs.getString("email"));
-                userModel.setOnline_status(rs.getString("online_status"));             
+                userModel.setOnline_status(rs.getString("online_status"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return userModel;
     }
+
     public static ArrayList<TaskModel> getTaskRequestsForUser(int id, String assign_status) {
         ArrayList<TaskModel> arrayOfTasks = new ArrayList<>();
         try {
@@ -714,6 +715,7 @@ public class DatabaseHandler {
         }
         return arrayOfTasks;
     }
+
     public static int getUserCountOnStatus(String userStatus) {
         int count = 0;
         try {
@@ -759,6 +761,7 @@ public class DatabaseHandler {
         }
         return flag;
     }
+
     public static ArrayList<NotificationModel> getTaskNotificationsForUser(int id) {
         ArrayList<NotificationModel> arrayOfNotifications = new ArrayList<>();
         try {
@@ -781,7 +784,7 @@ public class DatabaseHandler {
                 notificationModel.setTask_title(rs.getString("task.title"));
                 notificationModel.setUser_name(rs.getString("name"));
                 notificationModel.setTask_status(rs.getString("task_status"));
-                
+
                 arrayOfNotifications.add(notificationModel);
             }
         } catch (SQLException ex) {
@@ -789,6 +792,54 @@ public class DatabaseHandler {
         }
         return arrayOfNotifications;
     }
+
+    public static int selectCountOfAllTasks(int user_id) {
+        int count = 0;
+        try {
+            pst = con.prepareStatement("select count(task_id) from task where user_id=?;");
+            pst.setInt(1, user_id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count(task_id)");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public static int selectCountOfTasksByStatus(int user_id, String task_status) {
+        int count = 0;
+        try {
+            pst = con.prepareStatement("select count(task_id) from task where task_status=? and user_id=?;");
+            pst.setString(1, task_status);
+            pst.setInt(2, user_id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count(task_id)");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public static int selectCountOfAllList(int user_id) {
+        int count = 0;
+        try {
+            pst = con.prepareStatement("select count(list_id) from list where user_id=?;");
+            pst.setInt(1, user_id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count(list_id)");
+            }
+            return count;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
 // not used
 //    public static TaskModel selectTask(int taskID) {
 //        TaskModel taskModel = new TaskModel();

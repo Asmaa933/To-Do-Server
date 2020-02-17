@@ -293,4 +293,14 @@ public class JsonUtil {
                 .build();
         return obj;
     }
+     public static JsonObject fromStatisticArray(int[] arrayOfActivity) {
+        JsonObject obj = Json.createObjectBuilder()
+                .add("all_lists", arrayOfActivity[0])
+                .add("all_tasks", arrayOfActivity[1])
+                .add("todo_tasks", arrayOfActivity[2])
+                .add("in_progress_tasks", arrayOfActivity[3])
+                .add("done_tasks", arrayOfActivity[4])
+                .build();
+        return obj;
+    }
 }
