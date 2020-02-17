@@ -6,7 +6,6 @@
 package serverapplication;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -16,10 +15,10 @@ import java.util.logging.Logger;
  *
  * @author remon
  */
-public class ServerConnector extends Thread{
+public class ServerConnector extends Thread {
 
-    static int clientCounter =0;
-    
+    static int clientCounter = 0;
+
     public static final int PORT_NO = 5005;
     private ServerSocket serverSocket;
 
@@ -27,23 +26,24 @@ public class ServerConnector extends Thread{
      * Starts the server
      */
     public void startServer() {
-       this.start();
+        this.start();
     }
 
     @Override
     public void run() {
-       Socket clientSocket;
+        Socket clientSocket;
         try {
             serverSocket = new ServerSocket(PORT_NO);
             while (true) {
                 clientSocket = serverSocket.accept();
-                new ClientHandler(clientSocket,++clientCounter);
+                new ClientHandler(clientSocket, ++clientCounter);
             }
-            
+
         } catch (IOException ex) {
             Logger.getLogger(ServerConnector.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
+
     protected void stopServer() {
         try {
             serverSocket.close();

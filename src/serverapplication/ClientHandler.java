@@ -18,10 +18,6 @@ import javax.json.JsonObject;
 import model.*;
 import help.*;
 
-/**
- *
- * @author remon
- */
 public class ClientHandler extends Thread {
 
     private DataInputStream dis;
@@ -222,9 +218,9 @@ public class ClientHandler extends Thread {
                                 jAddFriendResponse = JsonUtil.fromBoolean(isFriendRequestSent);
                                 sendToOneClient(jAddFriendResponse.toString());
                                 break;
-                              case JsonConst.TYPE_STATISTICS_REQUEST:
+                            case JsonConst.TYPE_STATISTICS_REQUEST:
                                 int statsUserId = JsonUtil.convertFromJsonId(jsonObject);
-                                int [] arr = new int[5];
+                                int[] arr = new int[5];
                                 arr[0] = DatabaseHandler.selectCountOfAllList(statsUserId);
                                 arr[1] = DatabaseHandler.selectCountOfAllTasks(statsUserId);
                                 arr[2] = DatabaseHandler.selectCountOfTasksByStatus(statsUserId, TaskModel.TASK_STATUS.TODO);
@@ -260,7 +256,7 @@ public class ClientHandler extends Thread {
      */
     public void sendToOneClient(String msg) {
 
-        ps.println(msg);     
+        ps.println(msg);
     }
 
     /**

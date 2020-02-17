@@ -10,13 +10,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-/**
- *
- * @author esma
- */
 public class ServerApplication extends Application {    
     @Override
     public void start(Stage stage) throws Exception {
@@ -25,6 +22,7 @@ public class ServerApplication extends Application {
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image("/images/logo3.png"));
        scene.getStylesheets().add(getClass().getResource("StyleSheet.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
